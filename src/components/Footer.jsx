@@ -1,0 +1,152 @@
+import React from 'react';
+
+const Footer = ({ schoolData }) => {
+  if (!schoolData) return null;
+
+  const { name, logo, footer, portal_link } = schoolData;
+  const registerLink = portal_link
+    ? portal_link.includes('/login')
+      ? portal_link.replace('/login', '/register')
+      : portal_link.includes('login')
+      ? portal_link.replace('login', 'register')
+      : '/register'
+    : '/register';
+  const initials = name
+    ? name
+        .split(' ')
+        .map((s) => s[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase()
+    : 'S';
+  const currentYear = new Date().getFullYear();
+  const copyrightText = footer?.copyright || `© ${currentYear} ${name}. All rights reserved.`;
+
+  return (
+    <footer className="bg-slate-900 text-gray-300 py-12 sm:py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 pb-12 border-b border-slate-700">
+          {/* Column 1: School Info */}
+          <div className="animate-fadeIn">
+            <div className="flex items-center space-x-3 mb-4">
+              {logo ? (
+                <img
+                  src={logo}
+                  alt={name}
+                  className="h-10 w-10 rounded-md object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              ) : (
+                <div className="h-10 w-10 rounded-md bg-gray-100 text-slate-700 flex items-center justify-center font-semibold">
+                  {initials}
+                </div>
+              )}
+              <span className="text-xl font-bold text-white">{name}</span>
+            </div>
+            <p className="text-gray-400 mb-4">
+              Empowering students through innovative digital learning solutions and modern educational technology.
+            </p>
+          </div>
+
+          {/* Column 2: Quick Links */}
+          <div className="animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+            <h3 className="text-white font-semibold text-lg mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li>
+                <a
+                  href="#about"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#features"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Features
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#programs"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Programs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Contact
+                </a>
+              </li>
+              <li>
+                <a
+                  href={portal_link}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Login
+                </a>
+              </li>
+              <li>
+                <a
+                  href={registerLink}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Register
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Contact & CTA */}
+          <div className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+            <h3 className="text-white font-semibold text-lg mb-4">Get Started</h3>
+            <p className="text-gray-400 mb-6">
+              Access the portal and begin your learning journey — sign in or create an account.
+            </p>
+            <div className="flex items-center gap-3">
+              <a
+                href={portal_link}
+                className="inline-block px-4 py-2 rounded-lg bg-white text-blue-700 font-semibold hover:bg-blue-50 transition-colors shadow-sm"
+              >
+                Login
+              </a>
+              <a
+                href={registerLink}
+                className="inline-block px-4 py-2 rounded-lg text-white font-semibold shadow-lg"
+                style={{ background: 'linear-gradient(135deg,#06b6d4,#1d4ed8)' }}
+              >
+                Register
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-center text-gray-400 text-sm">
+          <p>{copyrightText}</p>
+          <div className="flex space-x-6 mt-4 sm:mt-0">
+            <a href="#" className="hover:text-white transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Terms of Service
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Cookie Policy
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
