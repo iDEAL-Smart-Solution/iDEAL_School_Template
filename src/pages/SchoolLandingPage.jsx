@@ -3,16 +3,31 @@ import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import About from '../components/About';
 import Features from '../components/Features';
+import SchoolStats from '../components/SchoolStats';
 import Programs from '../components/Programs';
+import CallToAction from '../components/CallToAction';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import useSchoolData from '../hooks/useSchoolData';
 
 const SchoolLandingPage = ({ schoolId, isSlug = false }) => {
-  const { data: schoolData, loading, error, refetch } = useSchoolData(
-    schoolId,
-    isSlug
-  );
+  const { data: schoolData, loading, error, refetch } = useSchoolData(schoolId, isSlug);
+
+  React.useEffect(() => {
+    if (!schoolData) return;
+
+    document.title = schoolData.name || 'School Landing Page';
+
+    const favicon = document.querySelector('link[rel="icon"]');
+    if (favicon) {
+      favicon.href = schoolData.logo || '/logo.png';
+    }
+
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) {
+      themeMeta.setAttribute('content', schoolData.theme_color || schoolData.secondary_color || '#1A1A2E');
+    }
+  }, [schoolData]);
 
   // Loading State
   if (loading) {
@@ -72,12 +87,21 @@ const SchoolLandingPage = ({ schoolId, isSlug = false }) => {
 
   // Success State - Render Landing Page
   return (
-    <div className="w-full bg-white scroll-smooth">
+    <div
+      className="w-full scroll-smooth"
+      style={{
+        backgroundColor: schoolData.background_color || '#ffffff',
+        color: schoolData.text_color || '#222222',
+      }}
+    >
       {/* Navbar */}
       <Navbar schoolData={schoolData} />
 
       {/* Hero Section */}
       <Hero schoolData={schoolData} />
+
+      {/* Stats Section */}
+      <SchoolStats schoolData={schoolData} />
 
       {/* About Section */}
       <About schoolData={schoolData} />
@@ -87,6 +111,9 @@ const SchoolLandingPage = ({ schoolId, isSlug = false }) => {
 
       {/* Programs Section */}
       <Programs schoolData={schoolData} />
+
+      {/* CTA Section */}
+      <CallToAction schoolData={schoolData} />
 
       {/* Contact Section */}
       <Contact schoolData={schoolData} />

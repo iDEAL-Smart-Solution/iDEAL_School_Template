@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { getMockSchoolData } from './mockData';
+import { getMockSchoolData, mockSchools } from './mockData';
 
 // Configure base URL - change this to your actual backend URL
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-// Flag to use mock data during development (set to false when backend is ready)
 const USE_MOCK_DATA = true;
 
 const schoolApi = axios.create({
@@ -15,16 +14,12 @@ const schoolApi = axios.create({
   },
 });
 
-// Fetch school landing page data
-export const fetchSchoolLandingPage = async (schoolId) => {
+export const fetchSchoolLandingPage = async (schoolId = 2) => {
   try {
-    // For development: use mock data
     if (USE_MOCK_DATA) {
-      console.log('📦 Using mock data for school ID:', schoolId);
-      return getMockSchoolData(schoolId, false);
+      return getMockSchoolData(schoolId);
     }
 
-    // For production: use real API
     const response = await schoolApi.get(`/schools/${schoolId}/landing-page`);
     return response.data;
   } catch (error) {
@@ -36,11 +31,10 @@ export const fetchSchoolLandingPage = async (schoolId) => {
   }
 };
 
-// Fetch all schools (optional, for listing)
 export const fetchAllSchools = async () => {
   try {
     if (USE_MOCK_DATA) {
-      return require('./mockData').mockSchools;
+      return mockSchools;
     }
 
     const response = await schoolApi.get('/schools');
@@ -51,16 +45,12 @@ export const fetchAllSchools = async () => {
   }
 };
 
-// Fetch school by slug (optional, for clean URLs)
 export const fetchSchoolBySlug = async (slug) => {
   try {
-    // For development: use mock data
     if (USE_MOCK_DATA) {
-      console.log('📦 Using mock data for school slug:', slug);
       return getMockSchoolData(slug, true);
     }
 
-    // For production: use real API
     const response = await schoolApi.get(`/schools/slug/${slug}/landing-page`);
     return response.data;
   } catch (error) {

@@ -3,7 +3,9 @@ import React from 'react';
 const About = ({ schoolData }) => {
   if (!schoolData || !schoolData.about) return null;
 
-  const { name, about, logo } = schoolData;
+  const { name, about, logo, mission, vision, core_values, secondary_color, accent_color } = schoolData;
+  const secondary = secondary_color || '#1A1A2E';
+  const accent = accent_color || '#D4AF37';
 
   return (
     <section id="about" className="py-16 sm:py-20 lg:py-24 bg-white">
@@ -13,59 +15,58 @@ const About = ({ schoolData }) => {
           <div className="flex justify-center">
             <div className="relative">
               {logo && (
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-lg">
+                <div className="rounded-2xl p-8 shadow-lg" style={{ background: 'linear-gradient(135deg, rgba(244,196,48,0.12), rgba(26,26,46,0.06))' }}>
                   <img
                     src={logo}
                     alt={name}
                     className="h-64 w-64 object-contain"
                     onError={(e) => {
-                      e.target.style.display = 'none';
+                      e.currentTarget.style.display = 'none';
                     }}
                   />
                 </div>
               )}
               {/* Decorative element */}
-              <div className="absolute top-4 right-4 w-20 h-20 bg-blue-200 rounded-full blur-2xl opacity-40"></div>
+              <div className="absolute top-4 right-4 h-20 w-20 rounded-full blur-2xl opacity-40" style={{ backgroundColor: accent }}></div>
             </div>
           </div>
 
           {/* Right side - Text */}
           <div className="animate-fadeIn">
-            <div className="inline-block mb-4 px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+            <div className="inline-block mb-4 px-3 py-1 rounded-full text-sm font-semibold" style={{ backgroundColor: 'rgba(244, 196, 48, 0.15)', color: secondary }}>
               About Us
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight" style={{ color: secondary }}>
               Welcome to {name}
             </h2>
             <p className="text-lg text-gray-600 mb-6 leading-relaxed">
               {about}
             </p>
 
-            {/* Features List */}
-            <div className="space-y-4">
-              {[
-                'Innovative Learning Solutions',
-                'Digital Excellence',
-                'Student-Focused Education',
-                'Technology-Driven Approach',
-              ].map((feature, idx) => (
-                <div key={idx} className="flex items-start space-x-3">
-                  <div className="flex-shrink-0">
-                    <svg
-                      className="h-6 w-6 text-blue-600"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-gray-700 font-medium">{feature}</span>
-                </div>
-              ))}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+                <p className="text-sm font-semibold uppercase tracking-wide" style={{ color: secondary }}>Mission</p>
+                <p className="mt-2 text-gray-700 leading-relaxed">{mission}</p>
+              </div>
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+                <p className="text-sm font-semibold uppercase tracking-wide" style={{ color: secondary }}>Vision</p>
+                <p className="mt-2 text-gray-700 leading-relaxed">{vision}</p>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <p className="text-sm font-semibold uppercase tracking-wide" style={{ color: secondary }}>Core Values</p>
+              <div className="mt-3 flex flex-wrap gap-3">
+                {(core_values || []).map((value) => (
+                  <span
+                    key={value}
+                    className="rounded-full px-4 py-2 text-sm font-semibold"
+                    style={{ backgroundColor: 'rgba(244, 196, 48, 0.12)', color: secondary }}
+                  >
+                    {value}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>

@@ -9,8 +9,12 @@ export const mockSchools = [
     id: 1,
     name: "Ideal International College",
     slug: "ideal-international",
-    logo: "https://via.placeholder.com/200x100?text=Ideal+International",
-    theme_color: "#1e40af",
+    logo: "/logo.png",
+    theme_color: "#254ccf",
+    secondary_color: "#0f172a",
+    accent_color: "#3b82f6",
+    background_color: "#ffffff",
+    text_color: "#222222",
     tagline: "Empowering Students Through Technology",
     about: "Ideal International College is a premier institution dedicated to providing cutting-edge digital education solutions. We leverage advanced technology to create an engaging learning environment where students can excel academically and prepare for the future. Our comprehensive approach combines traditional educational excellence with innovative digital tools.",
     features: [
@@ -90,75 +94,116 @@ export const mockSchools = [
   },
   {
     id: 2,
-    name: "Future Academy",
-    slug: "future-academy",
-    logo: "https://via.placeholder.com/200x100?text=Future+Academy",
-    theme_color: "#059669",
-    tagline: "Shaping Tomorrow's Leaders",
-    about: "Future Academy prepares students for success in an increasingly digital world. Our innovative curriculum combines academic rigor with practical skills training. We believe in nurturing not just knowledge, but critical thinking, creativity, and character.",
+    name: "Command Day Secondary School, Ojo",
+    slug: "command-day-secondary-school-ojo",
+    logo: "/command_logo.jpg",
+    theme_color: "#F4C430",
+    secondary_color: "#1A1A2E",
+    accent_color: "#D4AF37",
+    background_color: "#FFFFFF",
+    text_color: "#222222",
+    tagline: "Excellence Through Discipline and Quality Education",
+    hero_title: "Welcome to Command Day Secondary School, Ojo",
+    hero_description: "Providing quality education, character development, leadership training, and academic excellence in a disciplined learning environment.",
+    about: "Command Day Secondary School, Ojo is a leading educational institution committed to nurturing students into responsible, knowledgeable, and productive citizens. Through a blend of academic excellence, discipline, leadership development, and extracurricular activities, the school prepares learners for success in higher education and future careers.",
+    mission: "To provide quality education that develops intellectual capacity, moral values, leadership skills, and lifelong learning.",
+    vision: "To be a centre of excellence recognized for producing disciplined, innovative, and globally competitive students.",
+    core_values: [
+      "Discipline",
+      "Excellence",
+      "Integrity",
+      "Leadership",
+      "Responsibility",
+      "Innovation"
+    ],
+    statistics: [
+      { value: "2000+", label: "Students" },
+      { value: "120+", label: "Qualified Teachers" },
+      { value: "95%", label: "Examination Success Rate" },
+      { value: "25+", label: "Years of Academic Excellence" }
+    ],
     features: [
       {
-        title: "Interactive E-Learning",
-        description: "Engaging multimedia lessons and interactive content",
-        icon: "🎥"
+        title: "Experienced Teachers",
+        description: "Highly qualified teachers who combine subject mastery with student mentorship.",
+        icon: "👨‍🏫"
       },
       {
-        title: "Virtual Classrooms",
-        description: "Live classes with interactive whiteboard and breakout rooms",
-        icon: "🖥️"
+        title: "Modern Learning Environment",
+        description: "A disciplined and well-structured environment that supports focused learning.",
+        icon: "🏫"
       },
       {
-        title: "AI Learning Assistant",
-        description: "Personalized learning paths powered by artificial intelligence",
-        icon: "🤖"
+        title: "Academic Excellence",
+        description: "A consistent record of strong results, rigorous standards, and quality instruction.",
+        icon: "🎓"
       },
       {
-        title: "Collaboration Tools",
-        description: "Project management and team collaboration features",
-        icon: "👥"
+        title: "Character Development",
+        description: "Programs that build responsibility, respect, and strong moral values.",
+        icon: "🛡️"
       },
       {
-        title: "Assessment Hub",
-        description: "Comprehensive testing, quizzes, and evaluation tools",
-        icon: "✅"
+        title: "ICT Integration",
+        description: "Digital literacy and technology-enabled learning to prepare students for the future.",
+        icon: "💻"
       },
       {
-        title: "Resource Library",
-        description: "Vast collection of videos, articles, and learning materials",
-        icon: "📖"
+        title: "Leadership Training",
+        description: "Opportunities that develop confidence, initiative, and responsible leadership.",
+        icon: "⭐"
       }
     ],
     programs: [
       {
-        name: "STEM Program",
-        description: "Science, Technology, Engineering, Mathematics integration",
-        icon: "⚙️"
+        name: "Junior Secondary Education",
+        description: "A strong foundation that builds core academic competence and character.",
+        icon: "📘"
       },
       {
-        name: "Commerce",
-        description: "Business Studies, Economics, Accounting programs",
+        name: "Senior Secondary Education",
+        description: "Focused academic pathways that prepare students for external examinations and higher education.",
+        icon: "📗"
+      },
+      {
+        name: "Science Programs",
+        description: "Rigorous science study with practical engagement and laboratory-based learning.",
+        icon: "🔬"
+      },
+      {
+        name: "Commercial Programs",
+        description: "Commerce-focused learning for students interested in business and finance pathways.",
         icon: "💼"
       },
       {
-        name: "Language Studies",
-        description: "English, Urdu, Arabic, and other language programs",
-        icon: "🌍"
+        name: "Arts & Humanities",
+        description: "Humanities subjects that sharpen critical thinking, communication, and civic awareness.",
+        icon: "📝"
       },
       {
-        name: "Professional Courses",
-        description: "Industry-recognized certification programs",
-        icon: "🏆"
+        name: "ICT and Digital Literacy",
+        description: "Technology skills that help students thrive in a modern digital world.",
+        icon: "💻"
+      },
+      {
+        name: "Leadership Development",
+        description: "Student leadership activities that build confidence, service, and accountability.",
+        icon: "🏅"
+      },
+      {
+        name: "Sports and Extracurricular Activities",
+        description: "Balanced school life with athletics, clubs, and creative activities.",
+        icon: "⚽"
       }
     ],
     contact: {
-      email: "contact@futureacademy.edu",
-      phone: "+92-300-9876543",
-      address: "456 Innovation Street, Karachi, Pakistan"
+      portal_url: "https://commandojo.idealsmartsolutions.com/",
+      description: "Use the official school portal for student services, updates, and admissions access."
     },
-    portal_link: "/login",
+    portal_link: "https://commandojo.idealsmartsolutions.com/",
     footer: {
-      copyright: "© 2024 Future Academy. All rights reserved.",
-      company_name: "Future Academy"
+      copyright: "© 2026 Command Day Secondary School, Ojo. All rights reserved.",
+      company_name: "Command Day Secondary School, Ojo"
     }
   },
   {
@@ -167,6 +212,10 @@ export const mockSchools = [
     slug: "excellence-international",
     logo: "https://via.placeholder.com/200x100?text=Excellence",
     theme_color: "#7c3aed",
+    secondary_color: "#312e81",
+    accent_color: "#a78bfa",
+    background_color: "#ffffff",
+    text_color: "#1f2937",
     tagline: "Excellence in Every Aspect",
     about: "Excellence International School is committed to delivering world-class education that prepares students for global success. With cutting-edge facilities and highly qualified educators, we provide a holistic learning experience that develops academic excellence and personal growth.",
     features: [
@@ -235,10 +284,14 @@ export const mockSchools = [
  * Mock API Response Function
  * Use this to test the application without a backend
  */
-export const getMockSchoolData = (schoolIdOrSlug, isSlug = false) => {
+export const getMockSchoolData = (schoolIdOrSlug = 1, isSlug = false) => {
+  const normalized = String(schoolIdOrSlug).trim();
+  const parsedId = Number(normalized);
   const school = isSlug
-    ? mockSchools.find(s => s.slug === schoolIdOrSlug)
-    : mockSchools.find(s => s.id === parseInt(schoolIdOrSlug));
+    ? mockSchools.find((s) => s.slug === normalized)
+    : Number.isFinite(parsedId)
+      ? mockSchools.find((s) => s.id === parsedId)
+      : mockSchools.find((s) => s.slug === normalized);
 
   if (!school) {
     throw new Error('School not found');
@@ -257,7 +310,7 @@ export const getMockSchoolData = (schoolIdOrSlug, isSlug = false) => {
  *    export const fetchSchoolLandingPage = async (schoolId) => {
  *      try {
  *        // For testing, return mock data
- *        return getMockSchoolData(schoolId, false);
+ *        return getMockSchoolData(schoolId);
  *        
  *        // For production, uncomment the real API call:
  *        // const response = await schoolApi.get(`/schools/${schoolId}/landing-page`);
@@ -267,7 +320,5 @@ export const getMockSchoolData = (schoolIdOrSlug, isSlug = false) => {
  *      }
  *    };
  *
- * 3. Test with URLs like:
- *    http://localhost:3000/school/1
- *    http://localhost:3000/school/slug/ideal-international
+ * 3. Test with both numeric IDs and slugs in the preview routes.
  */
