@@ -210,7 +210,7 @@ export const mockSchools = [
     id: 3,
     name: "Excellence International",
     slug: "excellence-international",
-    logo: "https://via.placeholder.com/200x100?text=Excellence",
+    logo: "/excellence_logo.svg",
     theme_color: "#7c3aed",
     secondary_color: "#312e81",
     accent_color: "#a78bfa",

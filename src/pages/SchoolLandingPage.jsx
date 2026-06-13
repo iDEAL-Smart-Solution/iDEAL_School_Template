@@ -9,83 +9,43 @@ import CallToAction from '../components/CallToAction';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import useSchoolData from '../hooks/useSchoolData';
+import LandingPageLoader from '../components/LandingPageLoader';
 
-const SchoolLandingPage = ({ schoolId, isSlug = false }) => {
-  const { data: schoolData, loading, error, refetch } = useSchoolData(schoolId, isSlug);
+const SchoolLandingPage = () => {
+  const { data: schoolData, loading } = useSchoolData();
 
+  // Once the public API resolves, we synchronise the browser chrome with the loaded school branding.
   React.useEffect(() => {
     if (!schoolData) return;
 
     document.title = schoolData.name || 'School Landing Page';
 
-    const favicon = document.querySelector('link[rel="icon"]');
+    let favicon = document.querySelector('link[rel="icon"]');
+    if (!favicon) {
+      favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      document.head.appendChild(favicon);
+    }
     if (favicon) {
       favicon.href = schoolData.logo || '/logo.png';
     }
 
-    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    let themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (!themeMeta) {
+      themeMeta = document.createElement('meta');
+      themeMeta.name = 'theme-color';
+      document.head.appendChild(themeMeta);
+    }
     if (themeMeta) {
       themeMeta.setAttribute('content', schoolData.theme_color || schoolData.secondary_color || '#1A1A2E');
     }
   }, [schoolData]);
 
-  // Loading State
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="text-center">
-          <div className="spinner mb-4 w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
-          <p className="text-gray-600 font-medium">Loading school portal...</p>
-        </div>
-      </div>
-    );
+    return <LandingPageLoader />;
   }
 
-  // Error State
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="text-center max-w-md">
-          <svg
-            className="w-16 h-16 text-red-500 mx-auto mb-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Oops! Something went wrong
-          </h1>
-          <p className="text-gray-600 mb-6">{error}</p>
-          <button
-            onClick={refetch}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // No Data State
-  if (!schoolData) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="text-center">
-          <p className="text-gray-600 font-medium">No school data available</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Success State - Render Landing Page
+  // The service already returns a safe fallback object when the API fails, so the landing page still renders.
   return (
     <div
       className="w-full scroll-smooth"
