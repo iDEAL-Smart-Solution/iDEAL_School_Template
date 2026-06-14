@@ -5,10 +5,21 @@ const Navbar = ({ schoolData }) => {
 
   if (!schoolData) return null;
 
-  const { name, logo, portal_link, theme_color } = schoolData;
+  const {
+    name,
+    logo,
+    portal_link,
+    theme_color,
+    secondary_color,
+    accent_color,
+    text_color,
+  } = schoolData;
   const loginLink = portal_link || '/login';
   const registerLink = deriveRegisterLink(loginLink);
-  const navAccent = theme_color || '#2563eb';
+  const navAccent = theme_color || '#F4C430';
+  const darkTone = secondary_color || '#1A1A2E';
+  const buttonAccent = accent_color || '#D4AF37';
+  const textTone = text_color || '#222222';
   const initials = name
     ? name
         .split(' ')
@@ -19,7 +30,10 @@ const Navbar = ({ schoolData }) => {
     : 'S';
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-md transition-shadow duration-300">
+    <nav
+      className="sticky top-0 z-50 border-b border-white/10 shadow-md backdrop-blur-md transition-shadow duration-300"
+      style={{ backgroundColor: darkTone }}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3 min-w-0">
@@ -27,18 +41,18 @@ const Navbar = ({ schoolData }) => {
               <img
                 src={logo}
                 alt={name}
-                className="h-11 w-11 shrink-0 rounded-xl bg-white object-contain ring-1 ring-slate-200 shadow-sm"
+                className="h-11 w-11 shrink-0 rounded-xl bg-white object-contain ring-1 ring-white/10 shadow-sm"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                 }}
               />
             ) : (
-              <div className="h-11 w-11 shrink-0 rounded-xl bg-gray-100 text-slate-600 flex items-center justify-center text-sm font-bold">
+              <div className="h-11 w-11 shrink-0 rounded-xl bg-white/10 text-white flex items-center justify-center text-sm font-bold">
                 {initials}
               </div>
             )}
             <div className="min-w-0">
-              <span className="block truncate text-lg sm:text-xl font-bold text-slate-900 leading-tight">
+              <span className="block truncate text-lg sm:text-xl font-bold leading-tight text-white">
                 {name}
               </span>
             </div>
@@ -47,46 +61,47 @@ const Navbar = ({ schoolData }) => {
           <div className="hidden md:flex items-center gap-8">
             <a
               href="#about"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+              className="font-medium transition-colors text-white/80 hover:text-white"
             >
               About
             </a>
             <a
               href="#features"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+              className="font-medium transition-colors text-white/80 hover:text-white"
             >
               Features
             </a>
             <a
               href="#programs"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+              className="font-medium transition-colors text-white/80 hover:text-white"
             >
               Programs
             </a>
             <a
               href="#contact"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+              className="font-medium transition-colors text-white/80 hover:text-white"
             >
               Contact
             </a>
-            <div className="flex items-center gap-4 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 shadow-sm">
+            <div className="flex items-center gap-4 rounded-full border border-white/10 bg-white/5 px-4 py-2 shadow-sm">
               <a
                 href={loginLink}
-                className="text-slate-700 font-semibold tracking-wide transition-colors hover:text-slate-950"
+                className="font-semibold tracking-wide transition-colors text-white/80 hover:text-white"
               >
                 Login
               </a>
               <span
-                className="select-none text-slate-300 text-lg leading-none"
+                className="select-none text-white/30 text-lg leading-none"
                 aria-hidden="true"
               >
                 |
               </span>
               <a
                 href={registerLink}
-                className="inline-flex items-center rounded-full px-5 py-2 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+                className="inline-flex items-center rounded-full px-5 py-2 text-sm font-semibold shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
                 style={{
-                  background: `linear-gradient(135deg, ${navAccent}, #1d4ed8)`,
+                  background: `linear-gradient(135deg, ${navAccent}, ${buttonAccent})`,
+                  color: textTone,
                 }}
               >
                 Register
@@ -96,11 +111,11 @@ const Navbar = ({ schoolData }) => {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 rounded-lg transition-colors hover:bg-white/10"
             aria-label="Toggle menu"
           >
             <svg
-              className="w-6 h-6"
+              className="w-6 h-6 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -116,31 +131,31 @@ const Navbar = ({ schoolData }) => {
         </div>
 
         {isOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-gray-200 pt-4 animate-fadeIn">
+          <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4 animate-fadeIn">
             <a
               href="#about"
-              className="block py-2 text-gray-700 hover:text-blue-600 font-medium"
+              className="block py-2 font-medium text-white/80 hover:text-white"
               onClick={() => setIsOpen(false)}
             >
               About
             </a>
             <a
               href="#features"
-              className="block py-2 text-gray-700 hover:text-blue-600 font-medium"
+              className="block py-2 font-medium text-white/80 hover:text-white"
               onClick={() => setIsOpen(false)}
             >
               Features
             </a>
             <a
               href="#programs"
-              className="block py-2 text-gray-700 hover:text-blue-600 font-medium"
+              className="block py-2 font-medium text-white/80 hover:text-white"
               onClick={() => setIsOpen(false)}
             >
               Programs
             </a>
             <a
               href="#contact"
-              className="block py-2 text-gray-700 hover:text-blue-600 font-medium"
+              className="block py-2 font-medium text-white/80 hover:text-white"
               onClick={() => setIsOpen(false)}
             >
               Contact
@@ -148,22 +163,23 @@ const Navbar = ({ schoolData }) => {
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
               <a
                 href={loginLink}
-                className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-center font-semibold text-slate-800 shadow-sm transition-all duration-300 hover:border-slate-300 hover:bg-slate-50 sm:min-w-28"
+                className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-center font-semibold text-white/90 shadow-sm transition-all duration-300 hover:bg-white/10 sm:min-w-28"
                 onClick={() => setIsOpen(false)}
               >
                 Login
               </a>
               <span
-                className="hidden select-none items-center justify-center px-1 text-slate-300 text-xl leading-none sm:flex"
+                className="hidden select-none items-center justify-center px-1 text-white/30 text-xl leading-none sm:flex"
                 aria-hidden="true"
               >
                 |
               </span>
               <a
                 href={registerLink}
-                className="rounded-2xl px-5 py-3 text-center font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl sm:min-w-28"
+                className="rounded-2xl px-5 py-3 text-center font-semibold shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl sm:min-w-28"
                 style={{
-                  background: `linear-gradient(135deg, ${navAccent}, #1d4ed8)`,
+                  background: `linear-gradient(135deg, ${navAccent}, ${buttonAccent})`,
+                  color: textTone,
                 }}
                 onClick={() => setIsOpen(false)}
               >

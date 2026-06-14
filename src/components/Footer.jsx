@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = ({ schoolData }) => {
   if (!schoolData) return null;
 
-  const { name, logo, footer, portal_link } = schoolData;
+  const { name, logo, footer, portal_link, secondary_color, accent_color } = schoolData;
   const registerLink = portal_link
     ? portal_link.includes('/login')
       ? portal_link.replace('/login', '/register')
@@ -21,11 +21,13 @@ const Footer = ({ schoolData }) => {
     : 'S';
   const currentYear = new Date().getFullYear();
   const copyrightText = footer?.copyright || `© ${currentYear} ${name}. All rights reserved.`;
+  const secondary = secondary_color || '#1A1A2E';
+  const accent = accent_color || '#D4AF37';
 
   return (
-    <footer className="bg-slate-900 text-gray-300 py-12 sm:py-16">
+    <footer className="py-12 sm:py-16 text-gray-200" style={{ backgroundColor: secondary }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 pb-12 border-b border-slate-700">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 pb-12" style={{ borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
           {/* Column 1: School Info */}
           <div className="animate-fadeIn">
             <div className="flex items-center space-x-3 mb-4">
@@ -46,7 +48,7 @@ const Footer = ({ schoolData }) => {
               <span className="text-xl font-bold text-white">{name}</span>
             </div>
             <p className="text-gray-400 mb-4">
-              Empowering students through innovative digital learning solutions and modern educational technology.
+              Excellence through discipline, academic rigor, leadership training, and holistic student development.
             </p>
           </div>
 
@@ -109,19 +111,20 @@ const Footer = ({ schoolData }) => {
           <div className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
             <h3 className="text-white font-semibold text-lg mb-4">Get Started</h3>
             <p className="text-gray-400 mb-6">
-              Access the portal and begin your learning journey — sign in or create an account.
+              Access the portal and begin your learning journey.
             </p>
             <div className="flex items-center gap-3">
               <a
                 href={portal_link}
-                className="inline-block px-4 py-2 rounded-lg bg-white text-blue-700 font-semibold hover:bg-blue-50 transition-colors shadow-sm"
+                className="inline-block px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm"
+                style={{ backgroundColor: accent, color: secondary }}
               >
                 Login
               </a>
               <a
                 href={registerLink}
-                className="inline-block px-4 py-2 rounded-lg text-white font-semibold shadow-lg"
-                style={{ background: 'linear-gradient(135deg,#06b6d4,#1d4ed8)' }}
+                className="inline-block px-4 py-2 rounded-lg font-semibold shadow-lg"
+                style={{ backgroundColor: 'rgba(255,255,255,0.10)', color: '#fff' }}
               >
                 Register
               </a>
