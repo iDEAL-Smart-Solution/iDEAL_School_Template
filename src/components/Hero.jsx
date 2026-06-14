@@ -14,13 +14,19 @@ const Hero = ({ schoolData }) => {
     accent_color,
     text_color,
   } = schoolData;
-  const registerLink = portal_link
-    ? portal_link.includes('/login')
-      ? portal_link.replace('/login', '/register')
-      : portal_link.includes('login')
-      ? portal_link.replace('login', 'register')
-      : '/register'
-    : '/register';
+
+  const normalizeUrl = (url) => {
+  if (!url) return null;
+
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+
+  return `https://${url}`;
+};
+
+const portalUrl = normalizeUrl(portal_link); 
+
 
   const primary = theme_color || '#F4C430';
   const secondary = secondary_color || '#1A1A2E';
@@ -57,14 +63,14 @@ const Hero = ({ schoolData }) => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href={portal_link}
+              href={portalUrl}
               className="px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:scale-105"
               style={{ backgroundColor: primary, color: foreground }}
             >
               Visit Portal
             </a>
             <a
-              href={registerLink}
+              href={portalUrl}
               className="px-8 py-3 rounded-full font-semibold transition-all duration-300 border"
               style={{ borderColor: 'rgba(244, 196, 48, 0.45)', color: '#fff', background: 'rgba(255,255,255,0.05)' }}
             >
