@@ -4,13 +4,20 @@ const Footer = ({ schoolData }) => {
   if (!schoolData) return null;
 
   const { name, logo, footer, portal_link, secondary_color, accent_color } = schoolData;
-  const registerLink = portal_link
-    ? portal_link.includes('/login')
-      ? portal_link.replace('/login', '/register')
-      : portal_link.includes('login')
-      ? portal_link.replace('login', 'register')
-      : '/register'
-    : '/register';
+  const normalizeUrl = (url) => {
+  if (!url) return null;
+
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+
+  return `https://${url}`;
+};
+
+const portalUrl = normalizeUrl(portal_link); 
+
+const registerUrl = `${portalUrl}/admission/apply`;
+
   const initials = name
     ? name
         .split(' ')
@@ -90,7 +97,7 @@ const Footer = ({ schoolData }) => {
               </li>
               <li>
                 <a
-                  href={portal_link}
+                  href={portalUrl}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Login
@@ -98,7 +105,7 @@ const Footer = ({ schoolData }) => {
               </li>
               <li>
                 <a
-                  href={registerLink}
+                  href={registerUrl}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Register
@@ -115,14 +122,14 @@ const Footer = ({ schoolData }) => {
             </p>
             <div className="flex items-center gap-3">
               <a
-                href={portal_link}
+                href={portalUrl}
                 className="inline-block px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm"
                 style={{ backgroundColor: accent, color: secondary }}
               >
                 Login
               </a>
               <a
-                href={registerLink}
+                href={registerUrl}
                 className="inline-block px-4 py-2 rounded-lg font-semibold shadow-lg"
                 style={{ backgroundColor: 'rgba(255,255,255,0.10)', color: '#fff' }}
               >

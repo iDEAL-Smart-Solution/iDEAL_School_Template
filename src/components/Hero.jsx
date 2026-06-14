@@ -27,6 +27,8 @@ const Hero = ({ schoolData }) => {
 
 const portalUrl = normalizeUrl(portal_link); 
 
+const registerUrl = `${portalUrl}/admission/apply`;
+
 
   const primary = theme_color || '#F4C430';
   const secondary = secondary_color || '#1A1A2E';
@@ -70,7 +72,7 @@ const portalUrl = normalizeUrl(portal_link);
               Visit Portal
             </a>
             <a
-              href={portalUrl}
+              href={registerUrl}
               className="px-8 py-3 rounded-full font-semibold transition-all duration-300 border"
               style={{ borderColor: 'rgba(244, 196, 48, 0.45)', color: '#fff', background: 'rgba(255,255,255,0.05)' }}
             >
