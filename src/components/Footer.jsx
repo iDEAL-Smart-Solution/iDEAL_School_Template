@@ -1,6 +1,11 @@
 import React from 'react';
+import { getReadableText } from '../utils/landingPageTheme';
+import { DEFAULT_LANDING_PAGE } from '../services/landingPageService';
+import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
 
 const Footer = ({ schoolData }) => {
+  const [sectionRef, isVisible] = useRevealOnScroll();
+
   if (!schoolData) return null;
 
   const { name, logo, footer, portal_link, secondary_color, accent_color } = schoolData;
@@ -23,9 +28,10 @@ const Footer = ({ schoolData }) => {
   const copyrightText = footer?.copyright || `© ${currentYear} ${name}. All rights reserved.`;
   const secondary = secondary_color || '#1A1A2E';
   const accent = accent_color || '#D4AF37';
+  const brandDescription = getReadableText(schoolData.tagline, '') || getReadableText(schoolData.about, DEFAULT_LANDING_PAGE.tagline);
 
   return (
-    <footer className="py-12 sm:py-16 text-gray-200" style={{ backgroundColor: secondary }}>
+    <footer ref={sectionRef} data-reveal className={`py-12 sm:py-16 text-gray-200 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`} style={{ backgroundColor: secondary }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 pb-12" style={{ borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
           {/* Column 1: School Info */}
@@ -48,7 +54,7 @@ const Footer = ({ schoolData }) => {
               <span className="text-xl font-bold text-white">{name}</span>
             </div>
             <p className="text-gray-400 mb-4">
-              Excellence through discipline, academic rigor, leadership training, and holistic student development.
+              {brandDescription}
             </p>
           </div>
 

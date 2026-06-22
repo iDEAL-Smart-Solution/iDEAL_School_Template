@@ -10,6 +10,8 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import useSchoolData from '../hooks/useSchoolData';
 import LandingPageLoader from '../components/LandingPageLoader';
+import { resolveColor } from '../utils/landingPageTheme';
+import { DEFAULT_LANDING_PAGE } from '../services/landingPageService';
 
 const SchoolLandingPage = () => {
   const { data: schoolData, loading } = useSchoolData();
@@ -48,10 +50,15 @@ const SchoolLandingPage = () => {
   // The service already returns a safe fallback object when the API fails, so the landing page still renders.
   return (
     <div
-      className="w-full scroll-smooth"
+      className="w-full scroll-smooth overflow-x-hidden"
       style={{
-        backgroundColor: schoolData.background_color || '#ffffff',
-        color: schoolData.text_color || '#222222',
+        '--lp-theme':     resolveColor(schoolData.theme_color,      DEFAULT_LANDING_PAGE.theme_color),
+        '--lp-secondary': resolveColor(schoolData.secondary_color,  DEFAULT_LANDING_PAGE.secondary_color),
+        '--lp-accent':    resolveColor(schoolData.accent_color,     DEFAULT_LANDING_PAGE.accent_color),
+        '--lp-bg':        resolveColor(schoolData.background_color, DEFAULT_LANDING_PAGE.background_color),
+        '--lp-text':      resolveColor(schoolData.text_color,       DEFAULT_LANDING_PAGE.text_color),
+        backgroundColor:  'var(--lp-bg)',
+        color:            'var(--lp-text)',
       }}
     >
       {/* Navbar */}
@@ -111,7 +118,8 @@ const ScrollToTopButton = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-8 right-8 p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 z-40"
+      className="fixed bottom-6 right-6 z-40 rounded-full p-3 text-white shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(15,23,42,0.25)]"
+      style={{ backgroundColor: 'var(--lp-theme, #1d4ed8)' }}
       aria-label="Scroll to top"
     >
       <svg

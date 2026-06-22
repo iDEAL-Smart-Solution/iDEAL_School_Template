@@ -23,7 +23,10 @@ const PUBLIC_LANDING_PAGE_ENDPOINT = 'https://suite.api.idealsmartsolutions.com/
  * @property {string} tagline
  * @property {string} hero_title
  * @property {string} hero_description
+ * @property {string} hero_image
  * @property {string} about
+ * @property {string} about_image
+ * @property {string} secondary_image
  * @property {string} mission
  * @property {string} vision
  * @property {string[]} core_values
@@ -38,7 +41,7 @@ const PUBLIC_LANDING_PAGE_ENDPOINT = 'https://suite.api.idealsmartsolutions.com/
 
 const DEFAULT_DOMAIN = 'localhost';
 
-const DEFAULT_LANDING_PAGE = {
+export const DEFAULT_LANDING_PAGE = {
   name: 'Ideal International College',
   logo: '/logo.png',
   theme_color: '#254ccf',
@@ -50,8 +53,11 @@ const DEFAULT_LANDING_PAGE = {
   hero_title: 'Welcome to Ideal International College',
   hero_description:
     'A modern learning environment built to support digital education, academic growth, and student success.',
+  hero_image: '/logo.png',
   about:
     'Ideal International College is a premier institution dedicated to providing cutting-edge digital education solutions. We leverage advanced technology to create an engaging learning environment where students can excel academically and prepare for the future. Our comprehensive approach combines traditional educational excellence with innovative digital tools.',
+  about_image: '/logo.png',
+  secondary_image: '/logo.png',
   mission:
     'To empower students through quality education, innovation, and a technology-rich learning experience.',
   vision:
@@ -238,6 +244,59 @@ const normalizeLandingPageData = (payload = {}) => {
     DEFAULT_LANDING_PAGE.portal_link,
   );
 
+  const hero_image = getString(
+    pickFirst(
+      source.hero_image,
+      source.heroImage,
+      source.banner_image,
+      source.bannerImage,
+      source.cover_image,
+      source.coverImage,
+      source.background_image,
+      source.backgroundImage,
+      content.hero_image,
+      content.heroImage,
+      branding.heroImage,
+      branding.hero_image,
+    ),
+    DEFAULT_LANDING_PAGE.hero_image,
+  );
+
+  const about_image = getString(
+    pickFirst(
+      source.about_image,
+      source.aboutImage,
+      source.gallery_image,
+      source.galleryImage,
+      content.about_image,
+      content.aboutImage,
+      branding.aboutImage,
+      branding.about_image,
+      hero_image,
+    ),
+    DEFAULT_LANDING_PAGE.about_image,
+  );
+
+  const secondary_image = getString(
+    pickFirst(
+      source.secondary_image,
+      source.secondaryImage,
+      source.hero_image,
+      source.heroImage,
+      content.secondary_image,
+      content.secondaryImage,
+      branding.secondaryImage,
+      branding.secondary_image,
+      about_image,
+    ),
+    DEFAULT_LANDING_PAGE.secondary_image,
+  );
+
+  const founded_year = getString(
+    pickFirst(source.founded_year, source.foundedYear, source.established_year, source.establishedYear),
+    '',
+  );
+
   const rawCoreValues = getArray(pickFirst(source.core_values, source.coreValues, content.core_values, content.coreValues));
   const statistics = normalizeStatistics(getArray(pickFirst(source.statistics, content.statistics)));
   const features = normalizeItemList(getArray(pickFirst(source.features, content.features)));
@@ -251,6 +310,10 @@ const normalizeLandingPageData = (payload = {}) => {
     accent_color,
     background_color,
     text_color,
+    hero_image,
+    about_image,
+    secondary_image,
+    founded_year,
     tagline: getString(pickFirst(source.tagline, content.tagline), DEFAULT_LANDING_PAGE.tagline),
     hero_title: getString(
       pickFirst(source.hero_title, source.heroTitle, content.hero_title, content.heroTitle),
