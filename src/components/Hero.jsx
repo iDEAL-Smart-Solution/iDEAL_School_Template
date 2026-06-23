@@ -45,13 +45,20 @@ const Hero = ({ schoolData }) => {
     text_color,
   } = schoolData;
 
-  const registerLink = portal_link
-    ? portal_link.includes('/login')
-      ? portal_link.replace('/login', '/register')
-      : portal_link.includes('login')
-      ? portal_link.replace('login', 'register')
-      : '/register'
-    : '/register';
+  const normalizeUrl = (url) => {
+  if (!url) return null;
+
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+
+  return `https://${url}`;
+};
+
+const portalUrl = normalizeUrl(portal_link); 
+
+const registerUrl = `${portalUrl}/admission/apply`;
+
 
   const primary = theme_color || '#F4C430';
   const secondary = secondary_color || '#1A1A2E';

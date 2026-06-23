@@ -19,6 +19,21 @@ const Contact = ({ schoolData }) => {
   const secondary = schoolData.secondary_color || '#1A1A2E';
   const accent = schoolData.accent_color || '#D4AF37';
 
+    const normalizeUrl = (url) => {
+  if (!url) return null;
+
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+
+  return `https://${url}`;
+};
+
+const portalUrl = normalizeUrl(portal_link); 
+
+const registerUrl = `${portalUrl}/admission/apply`;
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -83,7 +98,7 @@ const Contact = ({ schoolData }) => {
                 </p>
               )}
               <a
-                href={contact?.portal_url || portal_link}
+                href={portalUrl}
                 className="mt-6 inline-flex items-center rounded-full px-5 py-3 font-semibold transition-transform duration-300 hover:-translate-y-0.5"
                 style={{ backgroundColor: accent, color: secondary }}
               >
