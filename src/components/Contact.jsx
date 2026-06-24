@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { validateContactForm, isFormValid } from '../utils/formValidation';
+import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
 
 const Contact = ({ schoolData }) => {
+  const [sectionRef, isVisible] = useRevealOnScroll();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -8,6 +11,7 @@ const Contact = ({ schoolData }) => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({ name: '', email: '', message: '' });
 
   if (!schoolData) return null;
 
@@ -40,15 +44,20 @@ const registerUrl = `${portalUrl}/admission/apply`;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newErrors = validateContactForm(formData);
+    setErrors(newErrors);
+    if (!isFormValid(newErrors)) return;
+
     // In a real application, you would send this to a backend
     console.log('Form submitted:', formData);
     setSubmitted(true);
     setFormData({ name: '', email: '', message: '' });
+    setErrors({ name: '', email: '', message: '' });
     setTimeout(() => setSubmitted(false), 3000);
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-20 lg:py-24 bg-slate-50">
+    <section id="contact" ref={sectionRef} data-reveal className={`py-16 sm:py-20 lg:py-24 bg-slate-50 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -73,6 +82,21 @@ const registerUrl = `${portalUrl}/admission/apply`;
               <p className="mt-3 text-gray-600">
                 {contact?.description || 'Use the official school portal for admissions, updates, and student services.'}
               </p>
+              {contact?.email && (
+                <p className="mt-3 text-gray-600">
+                  <span className="font-semibold">Email:</span> {contact.email}
+                </p>
+              )}
+              {contact?.phone && (
+                <p className="mt-3 text-gray-600">
+                  <span className="font-semibold">Phone:</span> {contact.phone}
+                </p>
+              )}
+              {contact?.address && (
+                <p className="mt-3 text-gray-600">
+                  <span className="font-semibold">Address:</span> {contact.address}
+                </p>
+              )}
               <a
                 href={portalUrl}
                 className="mt-6 inline-flex items-center rounded-full px-5 py-3 font-semibold transition-transform duration-300 hover:-translate-y-0.5"
@@ -80,15 +104,6 @@ const registerUrl = `${portalUrl}/admission/apply`;
               >
                 Visit Portal
               </a>
-            </div>
-
-            <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-8">
-              <p className="text-sm font-semibold uppercase tracking-wide" style={{ color: secondary }}>
-                School Note
-              </p>
-              <p className="mt-3 text-gray-600">
-                Communication and access are centered around the official portal, so the preview stays realistic without inventing contact details.
-              </p>
             </div>
           </div>
 
@@ -116,11 +131,11 @@ const registerUrl = `${portalUrl}/admission/apply`;
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  required
                   placeholder="Your name"
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 transition-colors focus:outline-none focus:ring-2"
                   style={{ '--tw-ring-color': 'rgba(212, 175, 55, 0.25)' }}
                 />
+                {errors.name && <p role="alert" className="mt-1 text-sm text-red-600">{errors.name}</p>}
               </div>
 
               {/* Email Input */}
@@ -134,11 +149,11 @@ const registerUrl = `${portalUrl}/admission/apply`;
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  required
                   placeholder="Your email"
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 transition-colors focus:outline-none focus:ring-2"
                   style={{ '--tw-ring-color': 'rgba(212, 175, 55, 0.25)' }}
                 />
+                {errors.email && <p role="alert" className="mt-1 text-sm text-red-600">{errors.email}</p>}
               </div>
 
               {/* Message Input */}
@@ -151,12 +166,12 @@ const registerUrl = `${portalUrl}/admission/apply`;
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  required
                   placeholder="Your message"
                   rows="4"
                   className="w-full resize-none rounded-lg border border-gray-300 px-4 py-2 transition-colors focus:outline-none focus:ring-2"
                   style={{ '--tw-ring-color': 'rgba(212, 175, 55, 0.25)' }}
                 ></textarea>
+                {errors.message && <p role="alert" className="mt-1 text-sm text-red-600">{errors.message}</p>}
               </div>
 
               {/* Submit Button */}

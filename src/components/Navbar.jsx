@@ -1,7 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { resolveColor } from '../utils/landingPageTheme';
+import { DEFAULT_LANDING_PAGE } from '../services/landingPageService';
+
+// Pure function exported for testability (Property 3)
+export const computeNavStyle = (scrollY, secondaryColor) => {
+  return scrollY > 60
+    ? { backgroundColor: resolveColor(secondaryColor, DEFAULT_LANDING_PAGE.secondary_color) }
+    : { backgroundColor: 'rgba(0, 0, 0, 0)' };
+};
+
+// Pure function exported for testability (Property 4)
+export const deriveRegisterLink = (portalLink) => {
+  if (!portalLink) return '/register';
+  if (portalLink.includes('/login')) return portalLink.replace('/login', '/register');
+  if (portalLink.includes('login')) return portalLink.replace('login', 'register');
+  return '/register';
+};
 
 const Navbar = ({ schoolData }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 60);
+    };
+
+    // Call once on mount to handle pre-scrolled state
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (!schoolData) return null;
 
@@ -14,10 +44,10 @@ const Navbar = ({ schoolData }) => {
     accent_color,
     text_color,
   } = schoolData;
+
   const loginLink = portal_link || '/login';
   const registerLink = deriveRegisterLink(loginLink);
   const navAccent = theme_color || '#F4C430';
-  const darkTone = secondary_color || '#1A1A2E';
   const buttonAccent = accent_color || '#D4AF37';
   const textTone = text_color || '#222222';
   const initials = name
@@ -29,10 +59,14 @@ const Navbar = ({ schoolData }) => {
         .toUpperCase()
     : 'S';
 
+  const navStyle = scrolled
+    ? { backgroundColor: resolveColor(secondary_color, DEFAULT_LANDING_PAGE.secondary_color) }
+    : { backgroundColor: 'rgba(0, 0, 0, 0)' };
+
   return (
     <nav
-      className="sticky top-0 z-50 border-b border-white/10 shadow-md backdrop-blur-md transition-shadow duration-300"
-      style={{ backgroundColor: darkTone }}
+      className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 shadow-md transition-all duration-300"
+      style={navStyle}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
@@ -61,32 +95,32 @@ const Navbar = ({ schoolData }) => {
           <div className="hidden md:flex items-center gap-8">
             <a
               href="#about"
-              className="font-medium transition-colors text-white/80 hover:text-white"
+              className="font-medium transition-colors text-white/80 hover:text-[var(--lp-theme)]"
             >
               About
             </a>
             <a
               href="#features"
-              className="font-medium transition-colors text-white/80 hover:text-white"
+              className="font-medium transition-colors text-white/80 hover:text-[var(--lp-theme)]"
             >
               Features
             </a>
             <a
               href="#programs"
-              className="font-medium transition-colors text-white/80 hover:text-white"
+              className="font-medium transition-colors text-white/80 hover:text-[var(--lp-theme)]"
             >
               Programs
             </a>
             <a
               href="#contact"
-              className="font-medium transition-colors text-white/80 hover:text-white"
+              className="font-medium transition-colors text-white/80 hover:text-[var(--lp-theme)]"
             >
               Contact
             </a>
             <div className="flex items-center gap-4 rounded-full border border-white/10 bg-white/5 px-4 py-2 shadow-sm">
               <a
                 href={loginLink}
-                className="font-semibold tracking-wide transition-colors text-white/80 hover:text-white"
+                className="font-semibold tracking-wide transition-colors text-white/80 hover:text-[var(--lp-theme)]"
               >
                 Login
               </a>
@@ -134,28 +168,28 @@ const Navbar = ({ schoolData }) => {
           <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4 animate-fadeIn">
             <a
               href="#about"
-              className="block py-2 font-medium text-white/80 hover:text-white"
+              className="block py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
               onClick={() => setIsOpen(false)}
             >
               About
             </a>
             <a
               href="#features"
-              className="block py-2 font-medium text-white/80 hover:text-white"
+              className="block py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
               onClick={() => setIsOpen(false)}
             >
               Features
             </a>
             <a
               href="#programs"
-              className="block py-2 font-medium text-white/80 hover:text-white"
+              className="block py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
               onClick={() => setIsOpen(false)}
             >
               Programs
             </a>
             <a
               href="#contact"
-              className="block py-2 font-medium text-white/80 hover:text-white"
+              className="block py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
               onClick={() => setIsOpen(false)}
             >
               Contact
@@ -191,20 +225,6 @@ const Navbar = ({ schoolData }) => {
       </div>
     </nav>
   );
-};
-
-const deriveRegisterLink = (loginLink) => {
-  if (!loginLink) return '/register';
-
-  if (loginLink.includes('/login')) {
-    return loginLink.replace('/login', '/register');
-  }
-
-  if (loginLink.includes('login')) {
-    return loginLink.replace('login', 'register');
-  }
-
-  return '/register';
 };
 
 export default Navbar;

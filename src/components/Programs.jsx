@@ -1,4 +1,7 @@
 import React from 'react';
+import { resolveColor } from '../utils/landingPageTheme';
+import { DEFAULT_LANDING_PAGE } from '../services/landingPageService';
+import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
 
 const defaultPrograms = [
   { icon: '📘', name: 'Junior Secondary Education', description: 'A strong foundation that builds core academic competence and character.' },
@@ -12,13 +15,14 @@ const defaultPrograms = [
 ];
 
 const Programs = ({ schoolData }) => {
+  const [sectionRef, isVisible] = useRevealOnScroll();
   const programs = schoolData?.programs?.length ? schoolData.programs : defaultPrograms;
   const secondary = schoolData?.secondary_color || '#1A1A2E';
   const accent = schoolData?.accent_color || '#D4AF37';
   const primary = schoolData?.theme_color || '#F4C430';
 
   return (
-    <section id="programs" className="py-16 sm:py-20 lg:py-24 bg-white">
+    <section id="programs" ref={sectionRef} data-reveal className={`py-16 sm:py-20 lg:py-24 bg-white transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <div
@@ -39,7 +43,7 @@ const Programs = ({ schoolData }) => {
           {programs.map((program, idx) => (
             <div
               key={program.name || idx}
-              className="animate-fadeIn rounded-xl border p-8 transition-all duration-300 transform hover:scale-105"
+              className="animate-fadeIn rounded-xl border p-8 transition-all duration-300 transform hover:-translate-y-2"
               style={{
                 animationDelay: `${idx * 0.1}s`,
                 borderColor: 'rgba(26, 26, 46, 0.08)',
@@ -53,9 +57,19 @@ const Programs = ({ schoolData }) => {
               </h3>
               <p className="leading-relaxed text-gray-700">{program.description}</p>
               {program.details && <p className="mt-4 text-sm text-gray-600">{program.details}</p>}
+              {program.image && (
+                <div className="mt-6 overflow-hidden rounded-xl">
+                  <img
+                    src={program.image}
+                    alt={program.name || program.title}
+                    className="h-52 w-full object-cover transition-transform duration-500 hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+              )}
               <button
                 className="mt-6 rounded-lg px-4 py-2 font-semibold transition-colors"
-                style={{ backgroundColor: idx % 2 === 0 ? primary : accent, color: secondary }}
+                style={{ backgroundColor: resolveColor(primary, DEFAULT_LANDING_PAGE.theme_color), color: secondary }}
               >
                 Explore
               </button>
