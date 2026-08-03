@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
 
+const deriveRegisterLink = (loginLink) => {
+  if (!loginLink) return '/register';
+
+  if (loginLink.includes('/login')) {
+    return loginLink.replace('/login', '/register');
+  }
+
+  if (loginLink.includes('login')) {
+    return loginLink.replace('login', 'register');
+  }
+
+  return '/register';
+};
+
 const Navbar = ({ schoolData }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -191,20 +205,6 @@ const Navbar = ({ schoolData }) => {
       </div>
     </nav>
   );
-};
-
-const deriveRegisterLink = (loginLink) => {
-  if (!loginLink) return '/register';
-
-  if (loginLink.includes('/login')) {
-    return loginLink.replace('/login', '/register');
-  }
-
-  if (loginLink.includes('login')) {
-    return loginLink.replace('login', 'register');
-  }
-
-  return '/register';
 };
 
 export default Navbar;
