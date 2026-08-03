@@ -1,10 +1,21 @@
 import React from 'react';
 
-const shimmerClass = 'animate-pulse rounded-2xl bg-white/10';
+const shimmerClass = 'shimmer-gradient rounded-2xl';
 
 const LandingPageLoader = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#0f172a] px-4 text-white">
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        .shimmer-gradient {
+          background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 100%);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s ease-in-out infinite;
+        }
+      `}</style>
       <div className="w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl sm:p-8 lg:p-10">
         <div className="mb-8 flex items-center gap-4">
           <div className="h-16 w-16 rounded-2xl bg-white/10" />

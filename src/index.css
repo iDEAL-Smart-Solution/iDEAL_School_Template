@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
 /* Global Styles */
 * {
   scrollbar-width: thin;
@@ -14,8 +16,8 @@ html {
 
 body {
   @apply bg-white text-gray-900 antialiased;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
 /* Custom Animations */
@@ -77,6 +79,14 @@ body {
 
 .animate-slideUp {
   animation: slideUp 0.5s ease-in-out;
+}
+
+.animate-reveal {
+  animation: fadeIn 0.7s ease both;
+}
+
+.animate-reveal-delayed {
+  animation: fadeIn 0.7s 0.14s ease both;
 }
 
 /* Smooth transitions for interactive elements */
@@ -184,4 +194,21 @@ body {
 /* Smooth focus outline */
 :focus-visible {
   @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fadeIn,
+  .animate-slideInLeft,
+  .animate-slideInRight,
+  .animate-slideUp,
+  .animate-reveal,
+  .animate-reveal-delayed {
+    animation: none !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }

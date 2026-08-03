@@ -1,18 +1,22 @@
 import React from 'react';
+import { resolveColor } from '../utils/landingPageTheme';
+import { DEFAULT_LANDING_PAGE as DEFAULT } from '../services/landingPageService';
+import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
 
 const CallToAction = ({ schoolData }) => {
+  const [sectionRef, isVisible] = useRevealOnScroll();
+
   if (!schoolData) return null;
 
-  const primary = schoolData.theme_color || '#F4C430';
+  const theme_color = schoolData.theme_color;
   const secondary = schoolData.secondary_color || '#1A1A2E';
-  const accent = schoolData.accent_color || '#D4AF37';
-  const portalLink = schoolData.portal_link || schoolData.contact?.portal_url || '/';
+  const portalLink = schoolData.portal_link || schoolData.contact?.portal_url || '/login';
   const aboutLink = '#about';
   const title = schoolData.cta?.title || 'Begin Your Academic Journey Today';
   const description = schoolData.cta?.description || 'Join a community dedicated to excellence, discipline, and future success.';
 
   return (
-    <section className="py-16 sm:py-20">
+    <section ref={sectionRef} data-reveal className={`py-16 sm:py-20 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className="overflow-hidden rounded-3xl px-6 py-10 sm:px-10 sm:py-12 text-white shadow-2xl"
@@ -21,7 +25,7 @@ const CallToAction = ({ schoolData }) => {
           <div className="grid gap-8 lg:grid-cols-[1.4fr_auto] lg:items-center">
             <div>
               <div className="inline-flex rounded-full px-4 py-1 text-sm font-semibold"
-                style={{ backgroundColor: `rgba(244, 196, 48, 0.14)`, color: primary }}
+                style={{ backgroundColor: `rgba(244, 196, 48, 0.14)`, color: resolveColor(theme_color, DEFAULT.theme_color) }}
               >
                 Admissions & Portal Access
               </div>
@@ -32,7 +36,7 @@ const CallToAction = ({ schoolData }) => {
               <a
                 href={portalLink}
                 className="inline-flex items-center justify-center rounded-full px-6 py-3 font-semibold transition-transform duration-300 hover:-translate-y-0.5"
-                style={{ backgroundColor: accent }}
+                style={{ backgroundColor: resolveColor(theme_color, DEFAULT.theme_color) }}
               >
                 Visit Portal
               </a>
