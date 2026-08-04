@@ -140,7 +140,7 @@ const registerUrl = `${portalUrl}/admission/apply`;
                 Visit Portal
               </a>
               <a
-                href={registerLink}
+                href={registerUrl}
                 className="px-8 py-3 rounded-full font-semibold transition-all duration-300 border"
                 style={{
                   borderColor: 'rgba(244, 196, 48, 0.45)',
