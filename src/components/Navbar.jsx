@@ -9,25 +9,11 @@ export const computeNavStyle = (scrollY, secondaryColor) => {
     : { backgroundColor: 'rgba(0, 0, 0, 0)' };
 };
 
-// Pure function exported for testability (Property 4)
+// Pure function exported for testability
 export const deriveRegisterLink = (portalLink) => {
   if (!portalLink) return '/register';
   if (portalLink.includes('/login')) return portalLink.replace('/login', '/register');
   if (portalLink.includes('login')) return portalLink.replace('login', 'register');
-  return '/register';
-};
-
-const deriveRegisterLink = (loginLink) => {
-  if (!loginLink) return '/register';
-
-  if (loginLink.includes('/login')) {
-    return loginLink.replace('/login', '/register');
-  }
-
-  if (loginLink.includes('login')) {
-    return loginLink.replace('login', 'register');
-  }
-
   return '/register';
 };
 
