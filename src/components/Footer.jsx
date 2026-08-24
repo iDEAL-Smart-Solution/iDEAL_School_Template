@@ -2,6 +2,7 @@ import React from 'react';
 import { getReadableText } from '../utils/landingPageTheme';
 import { DEFAULT_LANDING_PAGE } from '../services/landingPageService';
 import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
+import SmartImage from './SmartImage';
 
 const Footer = ({ schoolData }) => {
   const [sectionRef, isVisible] = useRevealOnScroll();
@@ -44,20 +45,16 @@ const registerUrl = `${portalUrl}/admission/apply`;
           {/* Column 1: School Info */}
           <div className="animate-fadeIn">
             <div className="flex items-center space-x-3 mb-4">
-              {logo ? (
-                <img
-                  src={logo}
-                  alt={name}
-                  className="h-10 w-10 rounded-md object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              ) : (
-                <div className="h-10 w-10 rounded-md bg-gray-100 text-slate-700 flex items-center justify-center font-semibold">
-                  {initials}
-                </div>
-              )}
+              <SmartImage
+                src={logo}
+                alt={name}
+                className="h-10 w-10 rounded-md object-contain"
+                fallback={
+                  <div className="h-10 w-10 rounded-md bg-gray-100 text-slate-700 flex items-center justify-center font-semibold">
+                    {initials}
+                  </div>
+                }
+              />
               <span className="text-xl font-bold text-white">{name}</span>
             </div>
             <p className="text-gray-400 mb-4">

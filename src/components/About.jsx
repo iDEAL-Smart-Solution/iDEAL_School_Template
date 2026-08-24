@@ -2,6 +2,7 @@ import React from 'react';
 import { normalizeMediaUrl, resolveColor } from '../utils/landingPageTheme';
 import { DEFAULT_LANDING_PAGE } from '../services/landingPageService';
 import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
+import SmartImage from './SmartImage';
 
 const About = ({ schoolData }) => {
   const [sectionRef, isVisible] = useRevealOnScroll();
@@ -38,19 +39,18 @@ const About = ({ schoolData }) => {
           {/* Left side - Image column (only rendered when primaryImg exists) */}
           {hasImage && (
             <div className="relative hidden md:block">
-              <img
+              <SmartImage
                 src={primaryImg}
                 alt={name}
                 className="h-[420px] w-full rounded-2xl object-cover shadow-2xl"
-                onError={(e) => e.currentTarget.style.display = 'none'}
               />
               {hasBoth && (
-                <img
+                <SmartImage
                   src={secondaryImg}
                   alt=""
                   aria-hidden="true"
                   className="absolute -bottom-6 -right-6 h-40 w-40 rounded-2xl object-cover shadow-xl ring-4 ring-white"
-                  onError={(e) => e.currentTarget.style.display = 'none'}
+                  fallback={null}
                 />
               )}
               {/* Accent blob behind secondary image */}

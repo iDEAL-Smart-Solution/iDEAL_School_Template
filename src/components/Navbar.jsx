@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { resolveColor } from '../utils/landingPageTheme';
 import { DEFAULT_LANDING_PAGE } from '../services/landingPageService';
+import SmartImage from './SmartImage';
 
 // Pure function exported for testability (Property 3)
 export const computeNavStyle = (scrollY, secondaryColor) => {
@@ -71,20 +72,16 @@ const Navbar = ({ schoolData }) => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3 min-w-0">
-            {logo ? (
-              <img
-                src={logo}
-                alt={name}
-                className="h-11 w-11 shrink-0 rounded-xl bg-white object-contain ring-1 ring-white/10 shadow-sm"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
-            ) : (
-              <div className="h-11 w-11 shrink-0 rounded-xl bg-white/10 text-white flex items-center justify-center text-sm font-bold">
-                {initials}
-              </div>
-            )}
+            <SmartImage
+              src={logo}
+              alt={name}
+              className="h-11 w-11 shrink-0 rounded-xl bg-white object-contain ring-1 ring-white/10 shadow-sm"
+              fallback={
+                <div className="h-11 w-11 shrink-0 rounded-xl bg-white/10 text-white flex items-center justify-center text-sm font-bold">
+                  {initials}
+                </div>
+              }
+            />
             <div className="min-w-0">
               <span className="block truncate text-lg sm:text-xl font-bold leading-tight text-white">
                 {name}

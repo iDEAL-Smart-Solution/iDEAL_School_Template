@@ -2,6 +2,7 @@ import React from 'react';
 import { resolveColor } from '../utils/landingPageTheme';
 import { DEFAULT_LANDING_PAGE } from '../services/landingPageService';
 import { useRevealOnScroll } from '../hooks/useRevealOnScroll';
+import SmartImage from './SmartImage';
 
 const defaultPrograms = [
   { icon: '📘', name: 'Junior Secondary Education', description: 'A strong foundation that builds core academic competence and character.' },
@@ -59,7 +60,7 @@ const Programs = ({ schoolData }) => {
               {program.details && <p className="mt-4 text-sm text-gray-600">{program.details}</p>}
               {program.image && (
                 <div className="mt-6 overflow-hidden rounded-xl">
-                  <img
+                  <SmartImage
                     src={program.image}
                     alt={program.name || program.title}
                     className="h-52 w-full object-cover transition-transform duration-500 hover:scale-105"

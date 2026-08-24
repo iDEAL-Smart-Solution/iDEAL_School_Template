@@ -104,7 +104,10 @@ const registerUrl = `${portalUrl}/admission/apply`;
           src={bgUrl}
           className="sr-only"
           alt=""
-          onError={() => setImgError(true)}
+          onError={() => {
+            console.warn('[Hero] Background image failed to load, falling back to gradient:', bgUrl);
+            setImgError(true);
+          }}
         />
       )}
 
