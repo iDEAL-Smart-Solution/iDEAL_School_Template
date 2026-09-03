@@ -1,6 +1,3 @@
-// Usage: const [sectionRef, isVisible] = useRevealOnScroll();
-// <section ref={sectionRef} data-reveal className={`... ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
-
 import { useEffect, useRef, useState } from 'react';
 
 export const useRevealOnScroll = (options = {}) => {

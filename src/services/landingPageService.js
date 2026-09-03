@@ -168,9 +168,69 @@ const normalizeContact = (source = {}, portalLink = '') => ({
   portal_url: getString(pickFirst(source.portal_url, source.portalUrl, source.portalLink, portalLink), ''),
 });
 
+/**
+ * Maps common backend icon identifiers (text strings) to emoji equivalents.
+ * When the API returns an icon name instead of an emoji character, this ensures
+ * something meaningful is rendered rather than raw text like "monitor" or "book".
+ */
+const ICON_NAME_TO_EMOJI = {
+  // Education / Academic
+  book: '📚', books: '📚', reading: '📚', library: '📚',
+  'graduation-cap': '🎓', graduation: '🎓', degree: '🎓', academic: '🎓',
+  pencil: '✏️', pen: '✏️', write: '✏️', writing: '✏️',
+  assignment: '📝', homework: '📝', notes: '📝', note: '📝',
+  calendar: '📅', schedule: '📅', timetable: '📅',
+  chart: '📊', analytics: '📊', statistics: '📊', progress: '📊',
+  // Technology
+  computer: '💻', laptop: '💻', monitor: '💻', desktop: '💻', ict: '💻', digital: '💻',
+  code: '💻', coding: '💻', programming: '💻',
+  // People / Community
+  teacher: '👨‍🏫', teachers: '👨‍🏫', instructor: '👨‍🏫', faculty: '👨‍🏫',
+  student: '🎒', students: '🎒',
+  team: '👥', community: '👥', group: '👥', people: '👥',
+  chat: '💬', message: '💬', communication: '💬', messaging: '💬',
+  // School / Building
+  school: '🏫', building: '🏫', campus: '🏫',
+  // Science / STEM
+  science: '🔬', lab: '🔬', laboratory: '🔬', microscope: '🔬', biology: '🔬',
+  math: '📐', mathematics: '📐', geometry: '📐',
+  // Arts / Sports
+  art: '🎨', arts: '🎨', creative: '🎨', design: '🎨',
+  sports: '⚽', sport: '⚽', football: '⚽', soccer: '⚽',
+  music: '🎵', dance: '🎭', drama: '🎭',
+  medal: '🏅', award: '🏅', trophy: '🏆', achievement: '🏆',
+  // Security / Trust
+  security: '🔐', lock: '🔐', shield: '🛡️', safe: '🛡️', protection: '🛡️',
+  // Leadership / Character
+  leadership: '⭐', leader: '⭐', star: '⭐', excellence: '⭐',
+  character: '🌟', values: '🌟', integrity: '🌟',
+  // Commerce / Business
+  business: '💼', commerce: '💼', finance: '💼', economics: '💼',
+  // Misc
+  heart: '❤️', care: '❤️', support: '🤝', help: '🤝',
+  globe: '🌍', world: '🌍', global: '🌍',
+  rocket: '🚀', innovation: '🚀', growth: '🌱',
+};
+
+/**
+ * Resolves an icon value from the backend into a renderable emoji.
+ * - If it's already an emoji / multi-char string with non-ASCII, use it as-is.
+ * - If it's a plain ASCII identifier (e.g. "book", "monitor"), map it via ICON_NAME_TO_EMOJI.
+ * - If no mapping exists, return a neutral fallback emoji.
+ */
+const resolveIcon = (raw) => {
+  const value = getString(raw, '');
+  if (!value) return '';
+  // If it contains any non-ASCII character it's likely already an emoji
+  if (/[^\u0000-\u007F]/.test(value)) return value;
+  // Normalise: lowercase, strip hyphens/underscores/spaces
+  const key = value.toLowerCase().replace(/[-_\s]+/g, '-').trim();
+  return ICON_NAME_TO_EMOJI[key] || ICON_NAME_TO_EMOJI[key.replace(/-/g, '')] || '📌';
+};
+
 const normalizeItemList = (items = []) =>
   items.map((item) => ({
-    icon: getString(item?.icon, ''),
+    icon: resolveIcon(item?.icon),
     name: getString(pickFirst(item?.name, item?.title), ''),
     title: getString(pickFirst(item?.title, item?.name), ''),
     description: getString(pickFirst(item?.description, item?.details), ''),
@@ -374,10 +434,6 @@ export const getCurrentDomainName = () => {
   return window.location.hostname || window.location.host || DEFAULT_DOMAIN;
 };
 
-/**
- * Loads the public landing page for the current browser domain.
- * If the API fails, returns the built-in fallback content so the page still renders.
- */
 export const fetchPublicLandingPage = async (domainName = getCurrentDomainName()) => {
   const safeDomain = getString(domainName, DEFAULT_DOMAIN);
 
