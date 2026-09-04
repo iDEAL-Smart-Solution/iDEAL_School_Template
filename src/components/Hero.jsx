@@ -72,7 +72,7 @@ const registerUrl = `${portalUrl}/admission/apply`;
 
   return (
     <section
-      className="relative min-h-screen overflow-hidden"
+      className="hero-section relative min-h-screen overflow-hidden"
       style={sectionStyle}
     >
       {/* Decorative background blobs — shown only when no image */}
@@ -116,7 +116,7 @@ const registerUrl = `${portalUrl}/admission/apply`;
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-left animate-fadeIn max-w-2xl">
             {/* Tagline badge */}
-            <div className="mx-auto mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold tracking-[0.18em] text-white/80 uppercase">
+            <div className="mx-auto mb-5 inline-flex max-w-full break-words rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase leading-relaxed tracking-[0.12em] text-white/80 sm:text-sm sm:tracking-[0.18em]">
               {tagline}
             </div>
 

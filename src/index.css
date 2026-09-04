@@ -170,6 +170,12 @@ body {
   }
 }
 
+@media (max-width: 767px) {
+  .hero-section {
+    background-attachment: scroll !important;
+  }
+}
+
 @media (min-width: 641px) and (max-width: 1024px) {
   .text-responsive {
     @apply text-3xl;

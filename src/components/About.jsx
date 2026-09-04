@@ -38,24 +38,24 @@ const About = ({ schoolData }) => {
 
           {/* Left side - Image column (only rendered when primaryImg exists) */}
           {hasImage && (
-            <div className="relative hidden md:block">
+            <div className="relative">
               <SmartImage
                 src={primaryImg}
                 alt={name}
-                className="h-[420px] w-full rounded-2xl object-cover shadow-2xl"
+                className="h-64 w-full rounded-2xl object-cover shadow-2xl sm:h-80 md:h-[420px]"
               />
               {hasBoth && (
                 <SmartImage
                   src={secondaryImg}
                   alt=""
                   aria-hidden="true"
-                  className="absolute -bottom-6 -right-6 h-40 w-40 rounded-2xl object-cover shadow-xl ring-4 ring-white"
+                  className="absolute -bottom-4 right-0 h-28 w-28 rounded-2xl object-cover shadow-xl ring-4 ring-white sm:-bottom-6 sm:-right-6 sm:h-40 sm:w-40"
                   fallback={null}
                 />
               )}
               {/* Accent blob behind secondary image */}
               <div
-                className="absolute -bottom-8 -right-8 h-48 w-48 rounded-full blur-2xl opacity-20 -z-10"
+                className="absolute -bottom-8 right-0 h-48 w-48 rounded-full blur-2xl opacity-20 -z-10 sm:-right-8"
                 style={{ backgroundColor: accentClr }}
                 aria-hidden="true"
               />
