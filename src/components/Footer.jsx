@@ -123,17 +123,17 @@ const registerUrl = `${portalUrl}/admission/apply`;
             <p className="text-gray-400 mb-6">
               Access the portal and begin your learning journey.
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <a
                 href={portalUrl}
-                className="inline-block px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm"
+                className="inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm"
                 style={{ backgroundColor: accent, color: secondary }}
               >
                 Login
               </a>
               <a
                 href={registerUrl}
-                className="inline-block px-4 py-2 rounded-lg font-semibold shadow-lg"
+                className="inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-semibold shadow-lg"
                 style={{ backgroundColor: 'rgba(255,255,255,0.10)', color: '#fff' }}
               >
                 Register
@@ -145,7 +145,7 @@ const registerUrl = `${portalUrl}/admission/apply`;
         {/* Bottom Section */}
         <div className="flex flex-col sm:flex-row justify-between items-center text-gray-400 text-sm">
           <p>{copyrightText}</p>
-          <div className="flex space-x-6 mt-4 sm:mt-0">
+          <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 sm:mt-0 sm:justify-end">
             <a href="#" className="hover:text-white transition-colors">
               Privacy Policy
             </a>

@@ -25,7 +25,7 @@ import React, { useState } from 'react';
  * @param {React.ReactNode} [props.fallback] Custom fallback. Omit for the default
  *                                           placeholder box; pass null to hide.
  */
-const SmartImage = ({ src, alt = '', className = '', fallback, ...rest }) => {
+const SmartImage = ({ src, alt = '', className = '', fallback, style, ...rest }) => {
   const [failed, setFailed] = useState(false);
 
   const showFallback = !src || failed;
@@ -41,7 +41,11 @@ const SmartImage = ({ src, alt = '', className = '', fallback, ...rest }) => {
         className={className}
         role="img"
         aria-label={alt || 'Image unavailable'}
-        style={{ backgroundImage: 'linear-gradient(135deg, #eef2f7 0%, #e2e8f0 100%)' }}
+        style={{
+          aspectRatio: '4 / 3',
+          backgroundImage: 'linear-gradient(135deg, #eef2f7 0%, #e2e8f0 100%)',
+          ...style,
+        }}
       />
     );
   }
@@ -51,6 +55,7 @@ const SmartImage = ({ src, alt = '', className = '', fallback, ...rest }) => {
       src={src}
       alt={alt}
       className={className}
+      style={{ aspectRatio: '4 / 3', ...style }}
       onError={() => {
         console.warn('[SmartImage] Image failed to load, showing fallback:', src);
         setFailed(true);

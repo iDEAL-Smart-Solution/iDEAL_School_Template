@@ -1,5 +1,3 @@
-import { normalizeImageUrl } from '../utils/normalizeImageUrl';
-
 const PUBLIC_LANDING_PAGE_ENDPOINT = 'https://suite.api.idealsmartsolutions.com/api/LandingPage/public';
 
 /**
@@ -13,6 +11,7 @@ const PUBLIC_LANDING_PAGE_ENDPOINT = 'https://suite.api.idealsmartsolutions.com/
  * @property {string} [title]
  * @property {string} [description]
  * @property {string} [details]
+ * @property {string} [image]
  *
  * @typedef {Object} LandingPageData
  * @property {string} name
@@ -235,8 +234,7 @@ const normalizeItemList = (items = []) =>
     title: getString(pickFirst(item?.title, item?.name), ''),
     description: getString(pickFirst(item?.description, item?.details), ''),
     details: getString(item?.details, ''),
-    // Backend image URLs may be Google Drive share links; normalise so <img> can render them.
-    image: normalizeImageUrl(getString(pickFirst(item?.image, item?.imageUrl, item?.image_url, item?.photo), '')) || '',
+    image: getString(item?.image, ''),
   }));
 
 const normalizeStatistics = (items = []) =>
@@ -245,7 +243,7 @@ const normalizeStatistics = (items = []) =>
     label: getString(item?.label, ''),
   }));
 
-export const normalizeLandingPageData = (payload = {}) => {
+const normalizeLandingPageData = (payload = {}) => {
   const source = payload?.data || payload?.result || payload?.landingPage || payload;
   const branding = source?.branding || {};
   const content = source?.content || {};
@@ -368,16 +366,15 @@ export const normalizeLandingPageData = (payload = {}) => {
 
   return {
     name,
-    logo: normalizeImageUrl(logo) || logo,
+    logo,
     theme_color,
     secondary_color,
     accent_color,
     background_color,
     text_color,
-    // Normalise backend image URLs (e.g. Google Drive share links) into renderable direct URLs.
-    hero_image: normalizeImageUrl(hero_image) || hero_image,
-    about_image: normalizeImageUrl(about_image) || about_image,
-    secondary_image: normalizeImageUrl(secondary_image) || secondary_image,
+    hero_image,
+    about_image,
+    secondary_image,
     founded_year,
     tagline: getString(pickFirst(source.tagline, content.tagline), DEFAULT_LANDING_PAGE.tagline),
     hero_title: getString(

@@ -67,7 +67,7 @@ const Navbar = ({ schoolData }) => {
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 shadow-md transition-all duration-300"
-      style={navStyle}
+      style={isOpen ? { ...navStyle, backgroundColor: resolveColor(secondary_color, DEFAULT_LANDING_PAGE.secondary_color) } : navStyle}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
@@ -142,8 +142,10 @@ const Navbar = ({ schoolData }) => {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg transition-colors hover:bg-white/10"
+            className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg transition-colors hover:bg-white/10"
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
+            aria-controls="mobile-navigation"
           >
             <svg
               className="w-6 h-6 text-white"
@@ -162,31 +164,31 @@ const Navbar = ({ schoolData }) => {
         </div>
 
         {isOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4 animate-fadeIn">
+          <div id="mobile-navigation" className="md:hidden mt-4 max-h-[calc(100vh-5rem)] overflow-y-auto border-t border-white/10 pt-4 pb-4 animate-fadeIn">
             <a
               href="#about"
-              className="block py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
+              className="flex min-h-11 items-center py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
               onClick={() => setIsOpen(false)}
             >
               About
             </a>
             <a
               href="#features"
-              className="block py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
+              className="flex min-h-11 items-center py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
               onClick={() => setIsOpen(false)}
             >
               Features
             </a>
             <a
               href="#programs"
-              className="block py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
+              className="flex min-h-11 items-center py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
               onClick={() => setIsOpen(false)}
             >
               Programs
             </a>
             <a
               href="#contact"
-              className="block py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
+              className="flex min-h-11 items-center py-2 font-medium text-white/80 hover:text-[var(--lp-theme)]"
               onClick={() => setIsOpen(false)}
             >
               Contact

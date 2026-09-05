@@ -118,7 +118,7 @@ const ScrollToTopButton = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 z-40 rounded-full p-3 text-white shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(15,23,42,0.25)]"
+      className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-6 z-40 rounded-full p-3 text-white shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(15,23,42,0.25)]"
       style={{ backgroundColor: 'var(--lp-theme, #1d4ed8)' }}
       aria-label="Scroll to top"
     >

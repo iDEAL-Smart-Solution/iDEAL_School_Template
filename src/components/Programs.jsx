@@ -40,11 +40,11 @@ const Programs = ({ schoolData }) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {programs.map((program, idx) => (
             <div
               key={program.name || idx}
-              className="animate-fadeIn rounded-xl border p-8 transition-all duration-300 transform hover:-translate-y-2"
+              className="animate-fadeIn rounded-xl border p-5 transition-all duration-300 transform hover:-translate-y-2 sm:p-8"
               style={{
                 animationDelay: `${idx * 0.1}s`,
                 borderColor: 'rgba(26, 26, 46, 0.08)',
@@ -53,7 +53,7 @@ const Programs = ({ schoolData }) => {
               }}
             >
               {program.icon && <div className="mb-4 text-5xl">{program.icon}</div>}
-              <h3 className="mb-3 text-2xl font-bold" style={{ color: secondary }}>
+              <h3 className="mb-3 text-xl font-bold sm:text-2xl" style={{ color: secondary }}>
                 {program.name || program.title}
               </h3>
               <p className="leading-relaxed text-gray-700">{program.description}</p>
@@ -69,7 +69,7 @@ const Programs = ({ schoolData }) => {
                 </div>
               )}
               <button
-                className="mt-6 rounded-lg px-4 py-2 font-semibold transition-colors"
+                className="mt-6 min-h-11 rounded-lg px-4 py-2 font-semibold transition-colors"
                 style={{ backgroundColor: resolveColor(primary, DEFAULT_LANDING_PAGE.theme_color), color: secondary }}
               >
                 Explore
