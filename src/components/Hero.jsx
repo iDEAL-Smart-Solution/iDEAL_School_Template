@@ -16,10 +16,10 @@ export const computeHeroSectionStyle = (heroImage, secondary, imgError = false) 
   if (hasImage) {
     return {
       backgroundImage: `url(${bgUrl})`,
-      backgroundSize: 'cover',
+      backgroundSize: 'contain',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
-      backgroundAttachment: 'fixed',
+      backgroundAttachment: 'scroll',
     };
   }
   return {
