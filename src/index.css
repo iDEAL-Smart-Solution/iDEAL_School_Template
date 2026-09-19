@@ -176,12 +176,6 @@ body {
   }
 }
 
-/* Hero watermark responsive sizing */
-.hero-section {
-  background-size: contain !important;
-  background-repeat: no-repeat !important;
-}
-
 @media (min-width: 1025px) {
   .text-responsive {
     @apply text-4xl;

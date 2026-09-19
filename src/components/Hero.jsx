@@ -1,35 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { normalizeMediaUrl } from '../utils/landingPageTheme';
 
-/**
- * Computes the background style for the Hero section.
- * Pure function exported for testability.
- *
- * @param {string} heroImage - Raw hero image value from school data
- * @param {string} secondary - Secondary colour (CSS colour string)
- * @param {boolean} [imgError=false] - Whether the image probe has errored
- * @returns {React.CSSProperties}
- */
-export const computeHeroSectionStyle = (heroImage, secondary, imgError = false) => {
-  const bgUrl = normalizeMediaUrl(heroImage, '');
-  const hasImage = Boolean(bgUrl) && !imgError;
-  if (hasImage) {
-    return {
-      backgroundImage: `url(${bgUrl})`,
-      backgroundSize: 'contain',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundAttachment: 'scroll',
-    };
-  }
-  return {
-    background: `linear-gradient(135deg, ${secondary} 0%, #111827 68%, ${secondary} 100%)`,
-  };
-};
-
 const Hero = ({ schoolData }) => {
-  const [imgError, setImgError] = useState(false);
-
   if (!schoolData) return null;
 
   const {
@@ -66,55 +38,53 @@ const registerUrl = `${portalUrl}/admission/apply`;
   const foreground = text_color || '#222222';
 
   const bgUrl = normalizeMediaUrl(hero_image, '');
-  const hasImage = Boolean(bgUrl) && !imgError;
-
-  const sectionStyle = computeHeroSectionStyle(hero_image, secondary, imgError);
+  const hasImage = Boolean(bgUrl);
 
   return (
     <section
-      className="hero-section relative min-h-screen overflow-hidden"
-      style={sectionStyle}
+      className="relative isolate min-h-screen min-h-[100svh] overflow-hidden"
+      style={{ background: `linear-gradient(135deg, ${secondary} 0%, #111827 68%, ${secondary} 100%)` }}
     >
-      {/* Decorative background blobs — shown only when no image */}
-      {!hasImage && (
-        <>
+      <div className="absolute inset-0 overflow-hidden">
+        {hasImage && (
+          <>
+            <div
+              aria-hidden="true"
+              className="bg-cover bg-center [background-attachment:fixed] scale-110 blur-2xl opacity-40 absolute inset-0"
+              style={{ backgroundImage: `url(${bgUrl})` }}
+            />
+            <div
+              aria-hidden="true"
+              className="bg-contain bg-center bg-no-repeat [background-attachment:fixed] absolute inset-0"
+              style={{ backgroundImage: `url(${bgUrl})` }}
+            />
+          </>
+        )}
+
+        {!hasImage && (
+          <>
+            <div
+              className="absolute top-20 right-0 h-72 w-72 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+              style={{ backgroundColor: primary }}
+            />
+            <div
+              className="absolute -bottom-8 left-0 h-72 w-72 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+              style={{ backgroundColor: accent }}
+            />
+          </>
+        )}
+
+        {hasImage && (
           <div
-            className="absolute top-20 right-0 h-72 w-72 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
-            style={{ backgroundColor: primary }}
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{ backgroundColor: secondary, opacity: 0.35 }}
           />
-          <div
-            className="absolute -bottom-8 left-0 h-72 w-72 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
-            style={{ backgroundColor: accent }}
-          />
-        </>
-      )}
+        )}
 
-      {/* Colour overlay when a background image is present */}
-      {hasImage && (
-        <div
-          aria-hidden="true"
-          className="absolute inset-0"
-          style={{ backgroundColor: secondary, opacity: 0.65 }}
-        />
-      )}
-
-      {/* Hidden image probe — triggers imgError on load failure */}
-      {hasImage && (
-        <img
-          src={bgUrl}
-          className="sr-only"
-          alt=""
-          onError={() => {
-            console.warn('[Hero] Background image failed to load, falling back to gradient:', bgUrl);
-            setImgError(true);
-          }}
-        />
-      )}
-
-      {/* Main content — sits above overlay */}
-      <div className="relative z-10 flex min-h-screen flex-col items-start justify-center pt-[72px]">
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="text-left animate-fadeIn max-w-2xl">
+        <div className="relative z-10 flex min-h-screen min-h-[100svh] flex-col items-start justify-center overflow-y-auto pt-[72px]">
+          <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div className="animate-fadeIn max-w-2xl text-left">
             {/* Tagline badge */}
             <div className="mx-auto mb-5 inline-flex max-w-full break-words rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase leading-relaxed tracking-[0.12em] text-white/80 sm:text-sm sm:tracking-[0.18em]">
               {tagline}
@@ -179,6 +149,7 @@ const registerUrl = `${portalUrl}/admission/apply`;
                   />
                 </svg>
               </div>
+            </div>
             </div>
           </div>
         </div>
