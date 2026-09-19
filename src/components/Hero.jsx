@@ -45,21 +45,20 @@ const registerUrl = `${portalUrl}/admission/apply`;
       className="relative isolate min-h-screen min-h-[100svh] overflow-hidden"
       style={{ background: `linear-gradient(135deg, ${secondary} 0%, #111827 68%, ${secondary} 100%)` }}
     >
-      <div className="absolute inset-0 overflow-hidden">
-        {hasImage && (
-          <>
-            <div
-              aria-hidden="true"
-              className="bg-cover bg-center [background-attachment:fixed] scale-110 blur-2xl opacity-40 absolute inset-0"
-              style={{ backgroundImage: `url(${bgUrl})` }}
-            />
-            <div
-              aria-hidden="true"
-              className="bg-contain bg-center bg-no-repeat [background-attachment:fixed] absolute inset-0"
-              style={{ backgroundImage: `url(${bgUrl})` }}
-            />
-          </>
-        )}
+      {hasImage && (
+        <>
+          <div
+            aria-hidden="true"
+            className="bg-cover bg-center [background-attachment:fixed] scale-110 blur-2xl opacity-40 absolute inset-0"
+            style={{ backgroundImage: `url(${bgUrl})` }}
+          />
+          <div
+            aria-hidden="true"
+            className="bg-contain bg-center bg-no-repeat [background-attachment:fixed] absolute inset-0"
+            style={{ backgroundImage: `url(${bgUrl})` }}
+          />
+        </>
+      )}
 
         {!hasImage && (
           <>
@@ -82,7 +81,7 @@ const registerUrl = `${portalUrl}/admission/apply`;
           />
         )}
 
-        <div className="relative z-10 flex min-h-screen min-h-[100svh] flex-col items-start justify-center overflow-y-auto pt-[72px]">
+      <div className="relative z-10 flex min-h-screen min-h-[100svh] flex-col items-start justify-center">
           <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="animate-fadeIn max-w-2xl text-left">
             {/* Tagline badge */}
@@ -152,7 +151,6 @@ const registerUrl = `${portalUrl}/admission/apply`;
             </div>
             </div>
           </div>
-        </div>
       </div>
     </section>
   );
