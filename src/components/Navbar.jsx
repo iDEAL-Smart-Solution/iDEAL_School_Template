@@ -12,10 +12,17 @@ export const computeNavStyle = (scrollY, secondaryColor) => {
 
 // Pure function exported for testability
 export const deriveRegisterLink = (portalLink) => {
-  if (!portalLink) return '/register';
-  if (portalLink.includes('/login')) return portalLink.replace('/login', '/register');
-  if (portalLink.includes('login')) return portalLink.replace('login', 'register');
-  return '/register';
+  if (!portalLink) return '/admission/apply';
+
+  const trimmedLink = portalLink.trim();
+  if (!trimmedLink) return '/admission/apply';
+
+  const portalUrl =
+    trimmedLink.startsWith('http://') || trimmedLink.startsWith('https://')
+      ? trimmedLink
+      : `https://${trimmedLink}`;
+
+  return `${portalUrl}/admission/apply`;
 };
 
 const Navbar = ({ schoolData }) => {
@@ -47,7 +54,7 @@ const Navbar = ({ schoolData }) => {
   } = schoolData;
 
   const loginLink = portal_link || '/login';
-  const registerLink = deriveRegisterLink(loginLink);
+  const registerLink = deriveRegisterLink(portal_link);
   const navAccent = theme_color || '#F4C430';
   const buttonAccent = accent_color || '#D4AF37';
   const textTone = text_color || '#222222';
