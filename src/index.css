@@ -106,3 +106,8 @@
 .footer-bottom{font-size:12px}
 @media(max-width:800px){.mobile-menu a{font-size:16px}}
 @media(max-width:480px){.hero-kicker{font-size:12px}.hero-copy{font-size:16px}.hero-caption,.hero-index{font-size:12px}.stat span{font-size:12px}.footer-bottom{font-size:12px}}
+.page-loader{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#f8f7f3;color:#33443d}
+.page-loader-ring{width:44px;height:44px;border:3px solid rgba(41,100,85,.16);border-top-color:#296455;border-radius:50%;animation:page-loader-spin .8s linear infinite}
+.page-loader p{margin:0;font-size:14px;font-weight:600;letter-spacing:.015em}
+@keyframes page-loader-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.page-loader-ring{animation:none;border-color:#296455}}
