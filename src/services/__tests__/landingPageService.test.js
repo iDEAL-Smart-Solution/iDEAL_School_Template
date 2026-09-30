@@ -42,4 +42,23 @@ describe('normalizeLandingPageData — image URL normalization', () => {
     expect(result.logo).toBe('https://cdn.example.com/logo.png');
     expect(result.hero_image).toBe('https://bucket.r2.dev/hero.jpg');
   });
+
+  it('normalizes multiple hero images while keeping the legacy hero image', () => {
+    const result = normalizeLandingPageData({
+      hero_image: 'https://cdn.example.com/hero.jpg',
+      heroImages: ['https://cdn.example.com/one.jpg', 'https://drive.google.com/file/d/TWO/view'],
+    });
+    expect(result.hero_images).toEqual([
+      'https://cdn.example.com/one.jpg',
+      'https://drive.google.com/thumbnail?id=TWO&sz=w1000',
+      'https://cdn.example.com/hero.jpg',
+    ]);
+  });
+
+  it('builds one normalized admission URL from the tenant portal URL', () => {
+    expect(normalizeLandingPageData({ portal_link: 'https://portal.example.com/' }).admission_url)
+      .toBe('https://portal.example.com/admission/apply');
+    expect(normalizeLandingPageData({ portal_link: '/portal/' }).admission_url)
+      .toBe('/portal/admission/apply');
+  });
 });

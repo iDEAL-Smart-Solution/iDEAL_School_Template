@@ -1,11 +1,10 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
+import SchoolStats from '../components/SchoolStats';
 import About from '../components/About';
 import Features from '../components/Features';
-import SchoolStats from '../components/SchoolStats';
 import Programs from '../components/Programs';
-import CallToAction from '../components/CallToAction';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import useSchoolData from '../hooks/useSchoolData';
@@ -13,130 +12,28 @@ import LandingPageLoader from '../components/LandingPageLoader';
 import { resolveColor } from '../utils/landingPageTheme';
 import { DEFAULT_LANDING_PAGE } from '../services/landingPageService';
 
-const SchoolLandingPage = () => {
-  const { data: schoolData, loading } = useSchoolData();
-
-  // Once the public API resolves, we synchronise the browser chrome with the loaded school branding.
+export default function SchoolLandingPage() {
+  const { data, loading } = useSchoolData();
   React.useEffect(() => {
-    if (!schoolData) return;
+    if (!data) return;
+    document.title = data.name || 'School';
+    let icon = document.querySelector('link[rel="icon"]');
+    if (!icon) { icon = document.createElement('link'); icon.rel = 'icon'; document.head.appendChild(icon); }
+    icon.href = data.logo || '/logo.png';
+    let meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) { meta = document.createElement('meta'); meta.name = 'theme-color'; document.head.appendChild(meta); }
+    meta.content = data.secondary_color || '#172b3a';
+  }, [data]);
+  if (loading) return <LandingPageLoader />;
+  return <main className="school-site" style={{ '--lp-theme': resolveColor(data.theme_color, DEFAULT_LANDING_PAGE.theme_color), '--lp-secondary': resolveColor(data.secondary_color, DEFAULT_LANDING_PAGE.secondary_color), '--lp-accent': resolveColor(data.accent_color, DEFAULT_LANDING_PAGE.accent_color), '--lp-bg': resolveColor(data.background_color, DEFAULT_LANDING_PAGE.background_color), '--lp-text': resolveColor(data.text_color, DEFAULT_LANDING_PAGE.text_color) }}>
+    <Navbar schoolData={data}/><Hero schoolData={data}/><SchoolStats schoolData={data}/><About schoolData={data}/><Features schoolData={data}/><Programs schoolData={data}/>
+    {data.gallery?.length > 0 && <EditorialImages items={data.gallery} eyebrow="A glimpse of school life" title={<>Room to discover.<br/>Space to become.</>} />}
+    {data.facilities?.length > 0 && <EditorialImages items={data.facilities} eyebrow="The school experience" title={<>Made for learning<br/>and possibility.</>} />}
+    {data.testimonials?.length > 0 && <section className="quote-section"><p className="eyebrow">From our community</p>{data.testimonials.map((item) => <blockquote key={item.name}>“{item.quote}”<cite>{item.name}{item.role && ` · ${item.role}`}</cite></blockquote>)}</section>}
+    <Admissions data={data}/><Contact schoolData={data}/><Footer schoolData={data}/>
+  </main>;
+}
 
-    document.title = schoolData.name || 'School Landing Page';
+function Admissions({ data }) { return <section className="admissions-band"><div><p className="eyebrow">A place to grow</p><h2>{data.cta?.title || 'An excellent beginning starts here.'}</h2><p>{data.cta?.description}</p></div><a className="button button-light" href={data.admission_url}>Begin an application <span aria-hidden="true">↗</span></a></section>; }
 
-    let favicon = document.querySelector('link[rel="icon"]');
-    if (!favicon) {
-      favicon = document.createElement('link');
-      favicon.rel = 'icon';
-      document.head.appendChild(favicon);
-    }
-    if (favicon) {
-      favicon.href = schoolData.logo || '/logo.png';
-    }
-
-    let themeMeta = document.querySelector('meta[name="theme-color"]');
-    if (!themeMeta) {
-      themeMeta = document.createElement('meta');
-      themeMeta.name = 'theme-color';
-      document.head.appendChild(themeMeta);
-    }
-    if (themeMeta) {
-      themeMeta.setAttribute('content', schoolData.theme_color || schoolData.secondary_color || '#1A1A2E');
-    }
-  }, [schoolData]);
-
-  if (loading) {
-    return <LandingPageLoader />;
-  }
-
-  // The service already returns a safe fallback object when the API fails, so the landing page still renders.
-  return (
-    <div
-      className="w-full scroll-smooth overflow-x-hidden"
-      style={{
-        '--lp-theme':     resolveColor(schoolData.theme_color,      DEFAULT_LANDING_PAGE.theme_color),
-        '--lp-secondary': resolveColor(schoolData.secondary_color,  DEFAULT_LANDING_PAGE.secondary_color),
-        '--lp-accent':    resolveColor(schoolData.accent_color,     DEFAULT_LANDING_PAGE.accent_color),
-        '--lp-bg':        resolveColor(schoolData.background_color, DEFAULT_LANDING_PAGE.background_color),
-        '--lp-text':      resolveColor(schoolData.text_color,       DEFAULT_LANDING_PAGE.text_color),
-        backgroundColor:  'var(--lp-bg)',
-        color:            'var(--lp-text)',
-      }}
-    >
-      {/* Navbar */}
-      <Navbar schoolData={schoolData} />
-
-      {/* Hero Section */}
-      <Hero schoolData={schoolData} />
-
-      {/* Stats Section */}
-      <SchoolStats schoolData={schoolData} />
-
-      {/* About Section */}
-      <About schoolData={schoolData} />
-
-      {/* Features Section */}
-      <Features schoolData={schoolData} />
-
-      {/* Programs Section */}
-      <Programs schoolData={schoolData} />
-
-      {/* CTA Section */}
-      <CallToAction schoolData={schoolData} />
-
-      {/* Contact Section */}
-      <Contact schoolData={schoolData} />
-
-      {/* Footer */}
-      <Footer schoolData={schoolData} />
-
-      {/* Scroll to Top Button */}
-      <ScrollToTopButton />
-    </div>
-  );
-};
-
-/**
- * Scroll to Top Button Component
- */
-const ScrollToTopButton = () => {
-  const [isVisible, setIsVisible] = React.useState(false);
-
-  const handleScroll = () => {
-    setIsVisible(window.scrollY > 300);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  React.useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  if (!isVisible) return null;
-
-  return (
-    <button
-      onClick={scrollToTop}
-      className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-6 z-40 rounded-full p-3 text-white shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(15,23,42,0.25)]"
-      style={{ backgroundColor: 'var(--lp-theme, #1d4ed8)' }}
-      aria-label="Scroll to top"
-    >
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 14l-7-7m0 0l-7 7m7-7v12"
-        />
-      </svg>
-    </button>
-  );
-};
-
-export default SchoolLandingPage;
+function EditorialImages({ items, eyebrow, title }) { return <section className="editorial-gallery section-wrap"><p className="eyebrow">{eyebrow}</p><h2>{title}</h2><div className="gallery-grid">{items.map((item, i) => <figure key={`${item.title}-${i}`}><img src={item.image} alt={item.title || ''}/>{item.title && <figcaption>{item.title}</figcaption>}</figure>)}</div></section>; }

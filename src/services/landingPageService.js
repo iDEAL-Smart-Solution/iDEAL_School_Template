@@ -1,6 +1,7 @@
-import { normalizeImageUrl } from '../utils/normalizeImageUrl';
+﻿import { normalizeImageUrl } from '../utils/normalizeImageUrl';
 
-const PUBLIC_LANDING_PAGE_ENDPOINT = 'https://suite.api.idealsmartsolutions.com/api/LandingPage/public';
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://suite.api.idealsmartsolutions.com/api').replace(/\/$/, '');
+const PUBLIC_LANDING_PAGE_ENDPOINT = `${API_BASE_URL}/LandingPage/public`;
 
 /**
  * @typedef {Object} LandingPageStatisticsItem
@@ -56,22 +57,17 @@ export const DEFAULT_LANDING_PAGE = {
   hero_title: 'Welcome to Ideal International College',
   hero_description:
     'A modern learning environment built to support digital education, academic growth, and student success.',
-  hero_image: '/logo.png',
+  hero_image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=2400&q=85',
   about:
     'Ideal International College is a premier institution dedicated to providing cutting-edge digital education solutions. We leverage advanced technology to create an engaging learning environment where students can excel academically and prepare for the future. Our comprehensive approach combines traditional educational excellence with innovative digital tools.',
-  about_image: '/logo.png',
-  secondary_image: '/logo.png',
+  about_image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1400&q=85',
+  secondary_image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=1000&q=85',
   mission:
     'To empower students through quality education, innovation, and a technology-rich learning experience.',
   vision:
     'To be a leading institution known for academic excellence, digital transformation, and student-centered learning.',
   core_values: ['Innovation', 'Excellence', 'Integrity', 'Responsibility', 'Growth', 'Service'],
-  statistics: [
-    { value: '2000+', label: 'Students' },
-    { value: '120+', label: 'Qualified Teachers' },
-    { value: '95%', label: 'Examination Success Rate' },
-    { value: '25+', label: 'Years of Academic Excellence' },
-  ],
+  statistics: [],
   features: [
     {
       title: 'Digital Learning Platform',
@@ -161,6 +157,12 @@ const getString = (value, fallback = '') => {
 
 const getArray = (value) => (Array.isArray(value) ? value.filter(Boolean) : []);
 
+const normalizePortalUrl = (value) => {
+  const raw = getString(value, '/login');
+  if (/^https?:\/\//i.test(raw)) return raw.replace(/\/+$/, '');
+  return `/${raw.replace(/^\/+|\/+$/g, '')}`;
+};
+
 const normalizeContact = (source = {}, portalLink = '') => ({
   email: getString(pickFirst(source.email, source.Email, source.contactEmail), ''),
   phone: getString(pickFirst(source.phone, source.Phone, source.contactPhone), ''),
@@ -245,7 +247,7 @@ const normalizeStatistics = (items = []) =>
     label: getString(item?.label, ''),
   }));
 
-const normalizeLandingPageData = (payload = {}) => {
+export const normalizeLandingPageData = (payload = {}) => {
   const source = payload?.data || payload?.result || payload?.landingPage || payload;
   const branding = source?.branding || {};
   const content = source?.content || {};
@@ -303,10 +305,11 @@ const normalizeLandingPageData = (payload = {}) => {
     DEFAULT_LANDING_PAGE.text_color,
   );
 
-  const portal_link = getString(
+  const portal_link = normalizePortalUrl(getString(
     pickFirst(source.portal_link, source.portalLink, contactSource.portal_url, contactSource.portalUrl),
     DEFAULT_LANDING_PAGE.portal_link,
-  );
+  ));
+  const admission_url = `${portal_link}/admission/apply`;
 
   const hero_image = getString(
     pickFirst(
@@ -365,6 +368,9 @@ const normalizeLandingPageData = (payload = {}) => {
   const statistics = normalizeStatistics(getArray(pickFirst(source.statistics, content.statistics)));
   const features = normalizeItemList(getArray(pickFirst(source.features, content.features)));
   const programs = normalizeItemList(getArray(pickFirst(source.programs, content.programs)));
+  const hero_images = [...new Set(getArray(pickFirst(source.hero_images, source.heroImages, content.hero_images, content.heroImages))
+    .map((image) => normalizeImageUrl(getString(image, '')) || getString(image, '')).filter(Boolean)
+    .concat(normalizeImageUrl(hero_image) || hero_image))];
 
   return {
     name,
@@ -375,6 +381,7 @@ const normalizeLandingPageData = (payload = {}) => {
     background_color,
     text_color,
     hero_image: normalizeImageUrl(hero_image) || hero_image,
+    hero_images,
     about_image: normalizeImageUrl(about_image) || about_image,
     secondary_image: normalizeImageUrl(secondary_image) || secondary_image,
     founded_year,
@@ -390,12 +397,19 @@ const normalizeLandingPageData = (payload = {}) => {
     about: getString(pickFirst(source.about, content.about), DEFAULT_LANDING_PAGE.about),
     mission: getString(pickFirst(source.mission, content.mission), DEFAULT_LANDING_PAGE.mission),
     vision: getString(pickFirst(source.vision, content.vision), DEFAULT_LANDING_PAGE.vision),
-    core_values: rawCoreValues.length ? rawCoreValues.map((value) => getString(value, '')).filter(Boolean) : DEFAULT_LANDING_PAGE.core_values,
-    statistics: statistics.length ? statistics : DEFAULT_LANDING_PAGE.statistics,
-    features: features.length ? features : DEFAULT_LANDING_PAGE.features,
-    programs: programs.length ? programs : DEFAULT_LANDING_PAGE.programs,
+    core_values: rawCoreValues.map((value) => getString(value, '')).filter(Boolean),
+    statistics,
+    features,
+    programs,
+    gallery: normalizeItemList(getArray(pickFirst(source.gallery, content.gallery))),
+    facilities: normalizeItemList(getArray(pickFirst(source.facilities, content.facilities))),
+    testimonials: getArray(pickFirst(source.testimonials, content.testimonials)).map((item) => ({
+      quote: getString(item?.quote, ''), name: getString(item?.name, ''), role: getString(item?.role, ''),
+      image: normalizeImageUrl(getString(item?.image, '')) || getString(item?.image, ''),
+    })).filter((item) => item.quote && item.name),
     contact: normalizeContact(contactSource, portal_link),
     portal_link,
+    admission_url,
     footer: {
       copyright: getString(
         pickFirst(footerSource.copyright, source.copyright),
@@ -429,6 +443,11 @@ export const getCurrentDomainName = () => {
   if (typeof window === 'undefined') {
     return DEFAULT_DOMAIN;
   }
+
+  // Let local development request a real tenant's public data without
+  // changing hostname resolution or affecting production tenant detection.
+  const localTenant = import.meta.env.DEV ? import.meta.env.VITE_TENANT_DOMAIN : '';
+  if (localTenant) return localTenant.trim();
 
   return window.location.hostname || window.location.host || DEFAULT_DOMAIN;
 };
